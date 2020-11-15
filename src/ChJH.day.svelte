@@ -8,6 +8,7 @@
 	
 	import Column from './components/Column.svelte'
 	import Line from './components/Line.svelte';
+	import Area from './components/Area.svelte';
 	import AxisX from './components/AxisX.html.svelte';
 	import AxisY from './components/AxisY.html.svelte';
 	import SharedTooltip from './components/SharedTooltip.percent-range.svelte';
@@ -24,6 +25,7 @@
 	const yTickColor = "#ffa600";
 	const textHighlightColor = "#ffa600";
 	const colCol = "#ccc"
+	let charts = 3;
 	
 	export let data
 	
@@ -87,12 +89,14 @@
 	}
 	let shavedData
 	$: shavedData = cutData(dataToShave, start, end)
+	$: shavedMvAvg = cutData(MovingAverage, start, end)
 		
 	$: firstRepShort = shavedData[0].date.toLocaleDateString('no-NO', options)
 	$: lastRepShort = shavedData[shavedData.length-1].date.toLocaleDateString('no-NO', options)
 
 	
 	$: mvUniqueDates = uniques(shavedData, "date")
+	$: lineUniqueDates = uniques(shavedMvAvg, "date")
 	$: max = Math.max.apply(Math, shavedData.map(function(o) { return o.new; }))
 	
 	// https://stackoverflow.com/questions/33268863/find-last-matching-object-in-array-of-objects/49199917#49199917
@@ -141,11 +145,26 @@
 	hideTextInput={true}
 	inputType="number"
 	/> 
+	<div class="radios">
+		<label>
+			<input type=radio bind:group={charts} value={3}>
+			Begge
+		</label>
+		<label>
+			<input type=radio bind:group={charts} value={2}>
+			Kun dagvis
+		</label>
+		<label>
+			<input type=radio bind:group={charts} value={1}>
+			Kun glidende gjennomsnitt
+		</label>
+	</div>
 </article>
 
 <section>
 	<article class="chart">
 		<div class="chart-container">
+				{#if charts >= 2}
 				<LayerCake
 					percentRange={true}
 					position='absolute'
@@ -182,9 +201,65 @@
 							{yTickColor}
 						/>
 					</Html>
-
+					{#if charts==2}
+					<Html>
+						<SharedTooltip
+							formatTitle={formatTickX}
+							dataset={shavedData}
+						/>
+					</Html>
+					{/if}
 				</LayerCake>
+				{/if}
+				{#if charts == 3 || charts == 1}
 				
+				{#if charts === 1}
+				<LayerCake
+					percentRange={true}
+					position='absolute'
+					x='date'
+					y='avg'
+					data={shavedMvAvg}
+					yDomain={[0, Math.max.apply(Math, shavedMvAvg.map(function(o) { return o.avg; }))]}
+					xDomain={lineUniqueDates}
+					xScale={scaleBand()}
+				>
+				<ScaledSvg>
+					<Line
+						stroke={stroke}
+						strokeWidth={mainLineStrokeWidth}
+					/>
+					<Area
+						fill={stroke}
+					/>
+				</ScaledSvg>
+				<Html>
+				<AxisX
+					gridlines={false}
+					formatTick={formatTickX}
+					ticks={[
+					lineUniqueDates[0], 
+					lineUniqueDates[Math.round((25/100)*lineUniqueDates.length)], 
+					lineUniqueDates[Math.round(lineUniqueDates.length/2)], 
+					lineUniqueDates[Math.round((75/100)*lineUniqueDates.length)], 
+					lineUniqueDates[lineUniqueDates.length - 1]
+					]}
+					{xTickColor}
+				/>
+					<AxisY 
+						ticks={0}
+						gridlines={false}
+						{yTickColor}
+					/>
+				</Html>
+				<Html>
+					<SharedTooltip
+						formatTitle={formatTickX}
+						dataset={shavedMvAvg}
+					/>
+				</Html>
+				</LayerCake>
+				{:else}
 				<LayerCake
 					percentRange={true}
 					position='absolute'
@@ -194,8 +269,8 @@
 					yDomain={[0, Math.max.apply(Math, shavedData.map(function(o) { return o.new; }))]}
 					xDomain={mvUniqueDates}
 					xScale={scaleBand()}
-
 				>
+
 				<ScaledSvg>
 					<Line
 						stroke={stroke}
@@ -228,7 +303,8 @@
 					/>
 				</Html>
 				</LayerCake>
-
+				{/if}
+			{/if}
 			</div>
 	</article>
 	<article class="controls-doubleslide">
@@ -243,12 +319,13 @@
 	</article>
 
 </section>
+<article class="text" style="padding-top:1.5rem"><p>Nylig data for utvalgte land. Tallet er siste periode av glidende gjennomsnitt delt på befolkning.</p></article>
 <section class="minidays">
 {#each countries as country}
 	<Minidays {range} {start} {end} {country} />
 {/each}
 </section>
-<style>
+<style lang="scss">
 	.chart {
 		position: relative;
 	}
@@ -261,6 +338,13 @@
 		display: flex;
 		align-items: center;
 		justify-items: space-around;
+		padding: 1rem 0;
+	}
+	.controls .radios {
+		font-size: .8rem;
+		label {
+			display: inline-block;
+		}
 	}
 </style>
 

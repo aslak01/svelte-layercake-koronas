@@ -14,8 +14,6 @@
 	import ChartsApple from './ChApple.svelte';
 	import ChartsFHI from './ChFHI.svelte';
 	
-	// import ChartsJHminiday from './ChJH.miniday.svelte';
-	
 	const highlightColor = "#ffa600"
 	
 	// import ChartsKart1 from './ChKart.svelte';
@@ -120,7 +118,7 @@
 
 </main>
 
-<style type="text/scss" global>
+<style lang="scss" global>
 	@use "sass:color";
 
 	@import "carbon-components-svelte/css/g100";

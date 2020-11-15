@@ -144,7 +144,8 @@
 	.chart {
 		position: relative;
 		width: 80px;
-		height: 120px;
+		height: 100px;
+		padding-top: 0;
 	}
 	.chart-container {
 		position: relative;

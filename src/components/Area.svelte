@@ -4,8 +4,9 @@
 	const { data, xGet, yGet, xScale, yScale, extents } = getContext('LayerCake');
 
 	export let fill = '#ab00d610';
+	export let opacity = .1
 
-	$: path = 'M' + $data
+	$: path = 'M' + $data.filter(d => $yGet(d) !== undefined)
 		.map(d => {
 			return $xGet(d) + ',' + $yGet(d);
 		})
@@ -23,4 +24,4 @@
 	}
 </script>
 
-<path class='path-area' d='{area}' {fill} style="opacity: .1"></path>
+<path class='path-area' d='{area}' {fill} style="opacity: {opacity}"></path>
