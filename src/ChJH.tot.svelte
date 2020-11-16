@@ -13,14 +13,12 @@
 	const formatTickX = d => new Date(d).toLocaleDateString('no-NO', {day: '2-digit', month: '2-digit', year: '2-digit'});
 	const formatTickY = d => new Intl.NumberFormat("no-NO").format(d);
 	const stroke = '#eee';
+	const strokeWidth = 5;
 	const xTickColor = "#ffa600";
 	const yTickColor = "#ffa600";
 	const textHighlightColor = "#ffa600";
 
 	export let data
-	
-	let firstReport = data.info.firstReport.toLocaleDateString('no-NO')
-	let lastReport = data.info.lastReport.toLocaleDateString('no-NO')
 	
 	// moving average:
 	// https://stackoverflow.com/questions/60211628/moving-average-of-time-series-objects-in-array
@@ -45,7 +43,6 @@
 	let shavedData = chartData
 	$: shavedData = cutData(chartData, start, end)
 	
-	$: firstReportShaved = shavedData[0].date.toLocaleDateString('no-NO')
 	$: lastReportShaved = shavedData[shavedData.length-1].date.toLocaleDateString('no-NO')
 	let options = { day: 'numeric', month: 'numeric', year: '2-digit' }
 	$: firstRepShort = shavedData[0].date.toLocaleDateString('no-NO', options)
@@ -124,8 +121,8 @@
 			>
 				<ScaledSvg>
 					<Line
-						stroke={stroke}
-						strokeWidth="3"
+						{stroke}
+						{strokeWidth}
 					/>
 				</ScaledSvg>
 				<Html>

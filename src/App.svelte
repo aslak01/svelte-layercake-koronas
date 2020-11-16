@@ -123,8 +123,6 @@
 
 	@import "carbon-components-svelte/css/g100";
 
-
-
 	$basecol: #1a1f29;
 	$darker: scale-color(#1a1f29, $lightness: -10%);
 
@@ -146,8 +144,6 @@ background: linear-gradient(207deg, rgba(26,31,41,1) 38%, rgba(87,52,88,1) 100%)
 }
 
 
-	header {
-	}
 	h2 {
 		padding-top: 30px;
 	}

@@ -146,6 +146,8 @@
 	inputType="number"
 	/> 
 	<div class="radios">
+		<label for="radio">Vis: </label>
+		<div id="radio">
 		<label>
 			<input type=radio bind:group={charts} value={3}>
 			Begge
@@ -158,6 +160,7 @@
 			<input type=radio bind:group={charts} value={1}>
 			Kun glidende gjennomsnitt
 		</label>
+		</div>
 	</div>
 </article>
 
@@ -247,8 +250,8 @@
 					{xTickColor}
 				/>
 					<AxisY 
-						ticks={0}
-						gridlines={false}
+						ticks={4}
+						gridlines={true}
 						{yTickColor}
 					/>
 				</Html>
@@ -336,14 +339,20 @@
 	}
 	.minidays {
 		display: flex;
-		align-items: center;
-		justify-items: space-around;
+		/* align-items: center; */
+		height: 100%;
+		width: 100%;
+		flex-flow: row wrap;
+		flex-wrap: wrap;
+		justify-items: space-evenly safe;
 		padding: 1rem 0;
 	}
 	.controls .radios {
+		margin-top: 1rem;
 		font-size: .8rem;
 		label {
 			display: inline-block;
+			margin-right: .5rem;
 		}
 	}
 </style>

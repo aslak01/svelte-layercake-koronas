@@ -1,14 +1,13 @@
 <script>
 
 	import { LayerCake, ScaledSvg, Html } from 'layercake';
-	import { format, precisionFixed } from 'd3-format';
 	import { scaleOrdinal } from 'd3-scale';
 
 	import MultiLine from './components/MultiLine.svelte';
 	import AxisX from './components/AxisX.html.svelte';
 	import AxisY from './components/AxisY.html.svelte';
 	import SharedTooltip from './components/SharedTooltip.percent-range.svelte';
-	import Labels from './components/Labels.svelte';
+	// import Labels from './components/Labels.svelte';
 
 	import raw from './data/convertcsv.json'		
 	const data = raw.map(({ FIELD1: År, ...rest }) => ({ År, ...rest }));

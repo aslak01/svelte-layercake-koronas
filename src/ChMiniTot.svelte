@@ -136,10 +136,6 @@
 		width: 80px;
 		position: relative;
 	}	
-
-	.minis .chart-container {
-
-	}
 	
 	.startCase, .endCase {
 		font-size: 8pt;
@@ -155,22 +151,4 @@
 		right: -60px;
 		text-align: right;
 	}
-	/* article.mini {
-		min-width: 30vw;
-		max-width: 400px;
-		padding: 3rem;
-		max-height: 20vh;
-		min-height: 300px;
-	}
-	article.mini article {
-		min-width: 29vw;
-		max-width: 250px;
-		height: 15vh;
-		min-height: 200px;
-		text-align: center;
-		background: black;
-	}
-	article.mini article.text {
-		min-height: auto;
-	} */
 </style>

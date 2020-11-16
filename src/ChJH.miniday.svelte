@@ -85,7 +85,7 @@
 	
 	$: mvUniqueDates = uniques(shavedData, "date")
 	$: extents = calcExtents(shavedData,
-		 [{field: 'y', accessor: d => Math.max(d.new, d.avg) }]
+		 [{field: 'y', accessor: d => Math.max(d.new) }]
 		)
 	$: max = Math.max.apply(Math, shavedData.map(d => d.avg ))
 	// https://stackoverflow.com/questions/33268863/find-last-matching-object-in-array-of-objects/49199917#49199917
@@ -97,54 +97,62 @@
 
 </script>
 
-	<article class="chart">
-		<div class="chart-container">
-			{#await data}...
-			{:then data}
-				{#await $countryData}...
-				{:then cData}
-				<span class="name">{cData[0].nativeName}</span>
-				<span class="insidens">{Number.parseFloat(currAvg / cData[0].population).toPrecision(2)}</span>
-				{/await}
-				<LayerCake
-					percentRange={true}
-					x='date'
-					y='avg'
-					data={shavedData}
-					yDomain={[0, max]}
-					xDomain={mvUniqueDates}
-					xScale={scaleBand()}
-
-				>
-				<ScaledSvg>
-					<Line
-						{stroke}
-						{strokeWidth}
-					/>
-					<Area 
-						fill={stroke}
-					/>
-				</ScaledSvg>
-				<Html>
-				<AxisX
-					gridlines={false}
-					ticks={false}
-				/>
-					<AxisY 
-						ticks={0}
+	<article class="enhet">
+		{#await data}...
+		{:then data}
+			{#await $countryData}...
+			{:then cData}
+			<span class="name">{cData[0].nativeName}</span>
+			<span class="insidens">{Number.parseFloat(currAvg / cData[0].population).toPrecision(2)}</span>
+			{/await}
+			<div class="chart">
+				<div class="chart-container">
+					<LayerCake
+						percentRange={true}
+						x='date'
+						y='avg'
+						data={shavedData}
+						yDomain={[0, max]}
+						xDomain={mvUniqueDates}
+						xScale={scaleBand()}
+					>
+					<ScaledSvg>
+						<Line
+							{stroke}
+							{strokeWidth}
+						/>
+						<Area 
+							fill={stroke}
+						/>
+					</ScaledSvg>
+					<Html>
+					<AxisX
 						gridlines={false}
+						ticks={false}
 					/>
-				</Html>
-				</LayerCake>
-				{/await}
+						<AxisY 
+							ticks={0}
+							gridlines={false}
+						/>
+					</Html>
+					</LayerCake>
+				</div>
 			</div>
+		{/await}
 	</article>
 
 <style>
+	.enhet {
+		position: relative;
+		width: 100px;
+		height: 100px;
+		margin: auto;
+		justify-content: center;
+	}
 	.chart {
 		position: relative;
-		width: 80px;
-		height: 100px;
+		width: 100px;
+		height: 60px;
 		padding-top: 0;
 	}
 	.chart-container {
