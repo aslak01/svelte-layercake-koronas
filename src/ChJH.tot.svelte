@@ -99,13 +99,13 @@
 		<span style="color: {textHighlightColor}">
 			{lastDay}</span>. 
 	</h2>
-	<h4>
+	<h3>
 		+
 		<span style="color: {textHighlightColor}">
 			{lastDayNew}
 		</span>
 		nye {lastReportShaved}.
-	</h4>
+	</h3>
 </article>
 <section>
 	<article class="chart">

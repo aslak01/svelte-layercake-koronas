@@ -2,12 +2,12 @@
 
 	import { LayerCake, ScaledSvg, Html } from 'layercake';
 
-	import DualSlider from './utils/DualSlider.svelte';
+	// import DualSlider from './utils/DualSlider.svelte';
 	
 	import Line from './components/Line.svelte';
 	import AxisX from './components/AxisX.html.svelte';
 	import AxisY from './components/AxisY.html.svelte';
-	import NumericLabels from './components/NumericLabels.svelte';
+	// import NumericLabels from './components/NumericLabels.svelte';
 	
 	const formatTickX = d => new Date(d).toLocaleDateString('no-NO', {day: '2-digit', month: '2-digit', year: '2-digit'});
 	const stroke = '#eee';
@@ -18,10 +18,6 @@
 	export let name
 	export let start = 0
 	export let end = 1
-	
-	
-	const xKey = 'date';
-	const yKey = 'total';
 
 	// Data cutter
 	const chartData = data.data.total;
@@ -42,13 +38,6 @@
 
 	$: shavedData = cutData(chartData, start, end)
 	
-	$: firstReportShaved = shavedData[0].date.toLocaleDateString('no-NO')
-	$: lastReportShaved = shavedData[shavedData.length-1].date.toLocaleDateString('no-NO')
-	
-	
-	let options = { day: 'numeric', month: 'numeric', year: '2-digit' }
-	$: firstRepShort = shavedData[0].date.toLocaleDateString('no-NO', options)
-	$: lastRepShort = shavedData[shavedData.length-1].date.toLocaleDateString('no-NO', options)
 	$: noCaseFst = new Intl.NumberFormat("no-NO").format(shavedData[0].total)
 	$: noCaseEnd = new Intl.NumberFormat("no-NO").format(shavedData[shavedData.length-1].total)
 	$: lastDay = new Intl.NumberFormat("no-NO").format(shavedData[shavedData.length-1].total - shavedData[shavedData.length-2].total)
@@ -61,7 +50,7 @@
 <div class="mini">
 	<article class="minis">
 		<article class="text">
-			<h3>{name}</h3>
+			<h4>{name}</h4>
 			<!-- <p><span>{firstRepShort}&ndash;{lastRepShort}.</span></p> -->
 		</article>
 		<div class="container-container">
@@ -108,7 +97,6 @@
 </div>
 
 <style>
-
 	.mini  {
 		height: 100px;
 		width: 130px;
@@ -127,10 +115,10 @@
 		height: auto;
 		padding-bottom: 1rem;
 	}
-	.minis .text h3 {
-		font-size: 1.3rem;
+	.minis .text h4 {
+		font-size: 1rem;
+		margin: 0;
 	}
-
 	.container-container {
 		height: 40px;
 		width: 80px;

@@ -102,7 +102,7 @@
 		{:then data}
 			{#await $countryData}...
 			{:then cData}
-			<span class="name">{cData[0].nativeName}</span>
+			<h4 class="name">{cData[0].nativeName}</h4>
 			<span class="insidens">{Number.parseFloat(currAvg / cData[0].population).toPrecision(2)}</span>
 			{/await}
 			<div class="chart">
@@ -162,6 +162,8 @@
 	}
 	.name {
 		display: block;
+		font-size: 1rem;
+		margin: 0;
 		white-space: nowrap;
 	}
 </style>
