@@ -124,8 +124,6 @@
 		user-select: none;
 		box-sizing: border-box;
 		white-space: nowrap;
-	
-	
 	}
 	
 	.slider {

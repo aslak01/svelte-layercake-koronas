@@ -137,14 +137,15 @@
 	</p>
 </article>
 <article class="controls">
-	<Slider
+	<input type="range" min="1" max="60" bind:value={range} />
+	<!-- <Slider
 	labelText="Endre periode for glidende gjennomsnitt:"
 	min={1}
 	max={60}
 	bind:value={range}
 	hideTextInput={true}
 	inputType="number"
-	/> 
+	/> --> 
 	<div class="radios">
 		<label for="radio">Vis: </label>
 		<div id="radio">

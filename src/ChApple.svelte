@@ -5,11 +5,7 @@
 	import Pedestrian32 from "carbon-icons-svelte/lib/Pedestrian32";
 	import Close32 from "carbon-icons-svelte/lib/Close32";
 	
-	import { Slider } from "carbon-components-svelte";
-
 	import { LayerCake, ScaledSvg, Html, uniques } from 'layercake';
-	// import { timeParse } from 'd3-time-format';
-	import { format, precisionFixed } from 'd3-format';
 	import { scaleOrdinal } from 'd3-scale';
 
 	import MultiLine from './components/MultiLine.svelte';
@@ -105,7 +101,7 @@
 		return memo.concat(group.values);
 	}, []);
 	
-	const formatTickY = d => format(`.${precisionFixed(d)}s`)(d);
+	const formatTickY = d => new Intl.NumberFormat("no-NO").format(d);
 	const formatTickX = d => new Date(d).toLocaleDateString('no-NO', {day: '2-digit', month: '2-digit', year: '2-digit'});
 
 	// moving average:
@@ -185,14 +181,7 @@
 <p><span>{#if range>1}Glidende gjennomsnitt over {range} dager{:else}Alle tall{/if} mellom {mvAvgDtStart} og {mvAvgDtEnd}.</span></p>
 </article>
 <article class="controls">
-	<Slider
-	labelText="Endre periode for glidende gjennomsnitt:"
-	min={1}
-	max={60}
-	bind:value={range}
-	hideTextInput={true}
-	inputType="number"
-	/> 
+	<input type="range" min="1" max="60" bind:value={range} />
 </article>
 <section>
 	<article class="topcontrols" style="text-align: center">

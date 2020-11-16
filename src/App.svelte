@@ -121,10 +121,8 @@
 <style lang="scss" global>
 	@use "sass:color";
 
-	@import "carbon-components-svelte/css/g100";
-
 	$basecol: #1a1f29;
-	$darker: scale-color(#1a1f29, $lightness: -10%);
+	$darker: scale-color(#1a1f29, $lightness: -12%);
 
 body {
 	padding: 0;
@@ -170,10 +168,9 @@ background: linear-gradient(207deg, rgba(26,31,41,1) 38%, rgba(87,52,88,1) 100%)
 	width: 80vw;
 	max-width: 1200px;
 	margin: 0 auto;
-
-		height: auto;
-		padding-bottom: 1.5rem;
-		padding-top: 3rem;
+	height: auto;
+	padding-bottom: 1.5rem;
+	padding-top: 3rem;
 	}
 	article.controls {
 	height: auto;
@@ -181,7 +178,87 @@ background: linear-gradient(207deg, rgba(26,31,41,1) 38%, rgba(87,52,88,1) 100%)
 	width: 80vw;
 	max-width: 1200px;
 	margin: 0 auto;
-
+		input[type=range] {
+			-webkit-appearance: none;
+			width: 100%;
+			padding: 0;
+			border: 0;
+		}
+		input[type=range]:focus {
+			outline: none;
+		}
+		input[type=range]::-webkit-slider-runnable-track {
+			width: 100%;
+			height: 2px;
+			cursor: pointer;
+			background: black;
+		}
+		input[type=range]::-webkit-slider-thumb {
+			height: 26px;
+			width: 26px;
+			border-radius: 26px;
+			background: white;
+			cursor: pointer;
+			-webkit-appearance: none;
+			margin-top: -10px;
+		}
+		input[type=range]:focus::-webkit-slider-runnable-track {
+			background: $basecol;
+		}
+		input[type=range]::-moz-range-track {
+			width: 100%;
+			height: 8.4px;
+			cursor: pointer;
+			box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+			background: #3071a9;
+			border-radius: 1.3px;
+			border: 0.2px solid #010101;
+		}
+		input[type=range]::-moz-range-thumb {
+			box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+			border: 1px solid #000000;
+			height: 36px;
+			width: 16px;
+			border-radius: 3px;
+			background: #ffffff;
+			cursor: pointer;
+		}
+		input[type=range]::-ms-track {
+			width: 100%;
+			height: 8.4px;
+			cursor: pointer;
+			background: transparent;
+			border-color: transparent;
+			border-width: 16px 0;
+			color: transparent;
+		}
+		input[type=range]::-ms-fill-lower {
+			background: #2a6495;
+			border: 0.2px solid #010101;
+			border-radius: 2.6px;
+			box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+		}
+		input[type=range]::-ms-fill-upper {
+			background: #3071a9;
+			border: 0.2px solid #010101;
+			border-radius: 2.6px;
+			box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+		}
+		input[type=range]::-ms-thumb {
+			box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+			border: 1px solid #000000;
+			height: 36px;
+			width: 16px;
+			border-radius: 3px;
+			background: #ffffff;
+			cursor: pointer;
+		}
+		input[type=range]:focus::-ms-fill-lower {
+			background: #3071a9;
+		}
+		input[type=range]:focus::-ms-fill-upper {
+			background: #367ebd;
+		}
 	}
 	article.topcontrols {
 		height: auto;
