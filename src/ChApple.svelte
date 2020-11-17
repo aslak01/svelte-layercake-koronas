@@ -181,7 +181,7 @@
 <p><span>{#if range>1}Glidende gjennomsnitt over {range} dager{:else}Alle tall{/if} mellom {mvAvgDtStart} og {mvAvgDtEnd}.</span></p>
 </article>
 <article class="controls">
-	<input type="range" min="1" max="60" bind:value={range} />
+	<label>Endre periode for glidende gjennomsnitt:<input type="range" min="1" max="60" bind:value={range} /></label>
 </article>
 <section>
 	<article class="topcontrols" style="text-align: center">

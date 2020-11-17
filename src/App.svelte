@@ -14,6 +14,8 @@
 	import ChartsApple from './ChApple.svelte';
 	import ChartsFHI from './ChFHI.svelte';
 	
+	// import CountrySearch from './CountrySearch.svelte';
+	
 	const highlightColor = "#ffa600"
 	
 	// import ChartsKart1 from './ChKart.svelte';
@@ -56,6 +58,8 @@
 	</p>
 </article>
 </header>
+
+<!-- <CountrySearch/> -->
 
 
 {#await $response}
@@ -178,6 +182,9 @@ background: linear-gradient(207deg, rgba(26,31,41,1) 38%, rgba(87,52,88,1) 100%)
 	width: 80vw;
 	max-width: 1200px;
 	margin: 0 auto;
+		label {
+			font-size: .8rem;
+		}
 		input[type=range] {
 			-webkit-appearance: none;
 			width: 100%;

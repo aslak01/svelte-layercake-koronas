@@ -3,7 +3,6 @@
 	import { LayerCake, ScaledSvg, Html, uniques } from 'layercake';
 	import { scaleBand } from 'd3-scale';
 	
-	import { Slider } from "carbon-components-svelte";
 	import DualSlider from './utils/DualSlider.svelte';
 	
 	import Column from './components/Column.svelte'
@@ -137,15 +136,7 @@
 	</p>
 </article>
 <article class="controls">
-	<input type="range" min="1" max="60" bind:value={range} />
-	<!-- <Slider
-	labelText="Endre periode for glidende gjennomsnitt:"
-	min={1}
-	max={60}
-	bind:value={range}
-	hideTextInput={true}
-	inputType="number"
-	/> --> 
+	<label>Endre periode for glidende gjennomsnitt:<input type="range" min="1" max="60" bind:value={range} /></label>
 	<div class="radios">
 		<label for="radio">Vis: </label>
 		<div id="radio">
