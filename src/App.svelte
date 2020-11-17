@@ -14,10 +14,12 @@
 	import ChartsApple from './ChApple.svelte';
 	import ChartsFHI from './ChFHI.svelte';
 	
-	// import CountrySearch from './CountrySearch.svelte';
+	import CountrySearch from './CountrySearch.svelte';
 	
 	const highlightColor = "#ffa600"
 	
+	let selectedCountry;
+	$: console.log(selectedCountry)
 	// import ChartsKart1 from './ChKart.svelte';
 	 
 </script>
@@ -59,7 +61,7 @@
 </article>
 </header>
 
-<!-- <CountrySearch/> -->
+<!-- <CountrySearch bind:selectedCountry /> -->
 
 
 {#await $response}

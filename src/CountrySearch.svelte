@@ -6,16 +6,20 @@
 	
 	import AutoComplete from "simple-svelte-autocomplete";
 	
+	
+	
+	// https://gist.github.com/yesvods/51af798dd1e7058625f4#gistcomment-2365119
 	let concatAndDeDuplicateObjects = (p, ...arrs) => [].concat(...arrs).reduce((a, b) => !a.filter(c => b[p] === c[p]).length ? [...a, b] : a, []);
 	
 	const countries = concatAndDeDuplicateObjects('name', no, de, fr, en)
 	
 	// console.log(countries)
 	
-	let selectedCountry;
-	$: console.log(selectedCountry)
+	export let selectedCountry;
+	// $: console.log(selectedCountry)
 	
 </script>
+
 <article class="controls">
 	<AutoComplete items={countries} bind:selectedItem={selectedCountry} labelFieldName="name" />
 </article>
