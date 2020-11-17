@@ -23,7 +23,7 @@
 	// moving average:
 	// https://stackoverflow.com/questions/60211628/moving-average-of-time-series-objects-in-array
 	// Data cutter
-	let starter = ((data.data.total.findIndex(n => n.total >0)-2)/data.data.total.length)
+	let starter = ((data.data.total.findIndex(n => n.total >0))/data.data.total.length)
 	let start = starter
 	let end = 1
 	const chartData = data.data.total;

@@ -6,8 +6,8 @@
 	import { getData2 } from './utils/fetch1.js';
 
 	const response3 = getData("https://api.apify.com/v2/key-value-stores/3qlmMu1XN2ZLoVIQt/records/LATEST?disableRedirect=true");
-	const response2 = getData("https://disease.sh/v3/covid-19/apple/countries/Norway/All");
-	const response = getData2("https://disease.sh/v3/covid-19/historical/Norway?lastdays=all");
+	
+	
 	
 	import ChartsJHday from './ChJH.day.svelte';
 	import ChartsJHtot from './ChJH.tot.svelte';
@@ -18,21 +18,27 @@
 	
 	const highlightColor = "#ffa600"
 	
-	let selectedCountry;
+	let selectedCountry = {id: 578, name: "Norge", alpha2: "no", alpha3: "nor"}
 	$: console.log(selectedCountry)
 	// import ChartsKart1 from './ChKart.svelte';
+	
+	let request
+	
+	$: selectedCountry ? request = selectedCountry.alpha3 : request = "Norway"
+	
+	$: response = getData2("https://disease.sh/v3/covid-19/historical/" + request + "?lastdays=all")
+	$: response2 = getData("https://disease.sh/v3/covid-19/apple/countries/" + request + "/All");
 	 
 </script>
 
 <main>
 <header>
 <article class="text">
-	<h1>	
+	<h1 class="header">	
 		<Coronavirus32 
 			style="fill: {highlightColor}"
 		/>
-		Korona&shy;virus i Norge
-	</h1>
+		Korona&shy;virus i </h1><CountrySearch bind:selectedCountry />
 	<!-- <ChartsKart1 /> -->
 	<p>
 		
@@ -44,7 +50,7 @@
 			</strong>
 		{/await}
 		
-		diagnoser av Covid-19 i Norge. Av disse var 
+		diagnoser av Covid-19 i {selectedCountry.name}. Av disse var 
 		
 		{#await $response}...{:then data}
 			<strong style="color: {highlightColor}">
@@ -61,7 +67,6 @@
 </article>
 </header>
 
-<!-- <CountrySearch bind:selectedCountry /> -->
 
 
 {#await $response}
@@ -153,6 +158,10 @@ background: linear-gradient(207deg, rgba(26,31,41,1) 38%, rgba(87,52,88,1) 100%)
 	}
 	h1 {
 		padding-top: 100px;
+	}
+	
+	h1.header {
+		display: inline;
 	}
 	
 	.restricted {

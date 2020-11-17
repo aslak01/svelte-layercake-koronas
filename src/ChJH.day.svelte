@@ -71,7 +71,7 @@
 		
 	
 	// Data cutter
-	let starter = ((data.data.new.findIndex(n => n.new >0)-2)/data.data.new.length) // dynamic right before epidemic start
+	let starter = ((data.data.new.findIndex(n => n.new >0))/data.data.new.length) // dynamic right before epidemic start
 	let start = starter;
 	let end = 1;
 	

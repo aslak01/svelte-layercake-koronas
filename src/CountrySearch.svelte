@@ -15,11 +15,15 @@
 	
 	// console.log(countries)
 	
-	export let selectedCountry;
+	export let selectedCountry = {id: 578, name: "Norge", alpha2: "no", alpha3: "nor"}
 	// $: console.log(selectedCountry)
 	
 </script>
 
-<article class="controls">
-	<AutoComplete items={countries} bind:selectedItem={selectedCountry} labelFieldName="name" />
-</article>
+
+	<AutoComplete 
+		items={countries} 
+		bind:selectedItem={selectedCountry} 
+		labelFieldName="name" 
+		showClear="true"
+	/>
