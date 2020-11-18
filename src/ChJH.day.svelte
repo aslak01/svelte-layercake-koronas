@@ -15,6 +15,8 @@
 	
 	import DualSlider from './utils/DualSlider.svelte';
 	
+	import Brush from './utils/Brush.svelte'
+	
 	
 	import Column from './components/Column.svelte'
 	import Line from './components/Line.svelte';
@@ -313,20 +315,16 @@
 			{/if}
 			</div>
 	</article>
-	<article class="controls-doubleslide">
-		<p><span>{firstRepShort}</span></p>
-		<div class="doubleslide">
-			<DualSlider 
-			bind:start
-			bind:end
-			/>
-		</div>
-		<p><span>{lastRepShort}</span></p>
+	<article class="controls">
+		<Brush 
+			bind:min={start}
+			bind:max={end}
+		/>
 	</article>
 
 </section>
 <article class="text" style="padding-top:1.5rem">
-	<p>Nylig data for utvalgte land. Tallet er siste periode av glidende gjennomsnitt delt på befolkning.</p>
+	<p>Nylig data for utvalgte land. Tallet viser nylige tilfeller per million.</p>
 	<div class="themed">
 		<Select
 			{items}
@@ -372,6 +370,8 @@
 		--itemColor: #333;
 		--itemIsActiveColor: #333;
 		color: #333;
+		--inputColor: white;
+		--background: transparent;
 	}
 
 </style>

@@ -1,14 +1,10 @@
 <script>
-	// import AutoComplete from "simple-svelte-autocomplete";
 	import Select from 'svelte-select'
-	
 	import {countries as items} from './utils/searchcountries.js'
-	
-	let startValue = {label: "Norge", value: "nor"};
-	
+
 	export let selectedValue = {label: "Norge", value: "nor"};
 	
-	$: console.log(selectedValue)
+	// $: console.log(selectedValue)
 	
 </script>
 <style>
@@ -17,7 +13,7 @@
 		--itemIsActiveColor: #333;
 		color: #333;
 		width: 20%;
-		min-width: 300px;
+		min-width: 200px;
 		max-width: 500px;
 		display: inline-block;
 	}

@@ -4,6 +4,7 @@
 	import { LayerCake, ScaledSvg, Html, uniques } from 'layercake';
 
 	import DualSlider from './utils/DualSlider.svelte';
+	import Brush from './utils/Brush.svelte';
 	
 	import Line from './components/Line.svelte';
 	import AxisX from './components/AxisX.html.svelte';
@@ -156,18 +157,13 @@
 			</LayerCake>
 		</div>
 	</article>
-	<article class="controls-doubleslide">
-		<p><span>{firstRepShort}</span></p>
-		<div class="doubleslide">
-			<!-- <p><span>Juster periode:</span></p> -->
-			<DualSlider 
-			bind:start
-			bind:end
-			/>
-		</div>
-		<p><span>{lastRepShort}</span></p>
+	<article class="controls">
+		<Brush 
+			bind:min={start}
+			bind:max={end}
+		/>
 	</article>
-</section>
+<!-- </section>
 <article class="text" style="padding-top:1.5rem"><p>Utvalg land med lignende befolkning og befolkningstetthet som Norge over de samme datoene:</p></article>
 <section class="minicountries">
 	{#await $finland}
@@ -248,7 +244,7 @@
 		/>
 	{/await}
 	{/await}
-
+-->
 </section>
 
 <style>

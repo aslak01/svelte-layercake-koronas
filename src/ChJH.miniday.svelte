@@ -95,6 +95,11 @@
 	
 	$: currAvg = currAvgIndex > 0 ? shavedData[currAvgIndex].avg : false
 
+	let insidens = function (avg, pop) {
+		return Number.parseFloat(((avg / pop)).toPrecision(3)*1000000).toFixed()
+	}
+
+
 </script>
 
 	<article class="enhet">
@@ -103,7 +108,7 @@
 			{#await $countryData}...
 			{:then cData}
 			<h4 class="name">{cData.nativeName}</h4>
-			<span class="insidens">{Number.parseFloat(currAvg / cData.population).toPrecision(2)}</span>
+			<span class="insidens">{insidens(currAvg, cData.population)}</span>
 			{/await}
 			<div class="chart">
 				<div class="chart-container">
