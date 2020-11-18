@@ -75,17 +75,51 @@
 		
 	$: left = 100 * min;
 	$: right = 100 * (1 - max);
+	
+	import { LayerCake, ScaledSvg, Svg } from 'layercake';
+	import Line from './Line.svelte';
+	import Area from './Area.svelte';
+
+	export let x;
+	export let y;
+	export let data;
+	
+	export let highlightColor;
+	
+	
 </script>
 
 <div bind:this={brush} class="brush-outer" on:mousedown={reset}>
 	{#if min !== null}
-		<div class="brush-inner" on:mousedown|stopPropagation={move} style="left: {left}%; right: {right}%"></div>
-		<div class="brush-handle" on:mousedown|stopPropagation={adjust_min} style="left: {left}%"></div>
-		<div class="brush-handle" on:mousedown|stopPropagation={adjust_max} style="right: {right}%"></div>
+	<div class="chart-container">
+		<LayerCake
+			{x} {y} {data}
+			>
+		<Svg>
+			<Line
+				strokeWidth=1
+				stroke='white'
+			/>
+			<Area />
+		</Svg>
+		</LayerCake>
+	</div>
+		<div class="brush-inner" on:mousedown|stopPropagation={move} style="left: {left}%; right: {right}%; border-right: 4px solid {highlightColor}; border-left: 4px solid {highlightColor};"></div>
+		<div class="brush-handle" on:mousedown|stopPropagation={adjust_min} style="left: {left}%; background: {highlightColor}"></div>
+		<div class="brush-handle" on:mousedown|stopPropagation={adjust_max} style="right: {right}%; background: {highlightColor}"></div>
 	{/if}
 </div>
 
 <style>
+
+.chart-container {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+
+
 	.brush-outer {
 		position: relative;
 		width: 100%;
@@ -95,14 +129,12 @@
 	}
 	
 	.brush-inner {
+		box-sizing: margin-box;
 		position: absolute;
 		height: 100%;
 		cursor: move;
-		background: #2d354b
+		background: #ffffff30
 }
-	
-	
-	
 	
 	.brush-handle {
 		position: absolute;
@@ -114,9 +146,9 @@
 	.brush-handle::before {
 		position: absolute;
 		content: '';
-		width: 8px;
+		width: 4px;
 		left: -4px;
 		height: 100%;
-		background: white;
+		/* background: white; */
 	}
 </style>

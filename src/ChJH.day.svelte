@@ -8,15 +8,9 @@
 
 	import { countries as items } from './utils/searchcountries.js'
 	
-	let selectedValue = [{label: "Sverige", value: "swe"}, {label: "Russland", value: "rus"}, {label: "Frankrike", value: "fra"}, {label: "USA", value: "usa"}];
-	$: console.log(selectedValue)
+	let selectedValue = [{label: "Sverige", value: "swe"}, {label: "Russland", value: "rus"}, {label: "Frankrike", value: "fra"}, {label: "USA", value: "usa"}, {label: "Iran", value: "irn"}];
 
-
-	
-	import DualSlider from './utils/DualSlider.svelte';
-	
-	import Brush from './utils/Brush.svelte'
-	
+	export let highlightColor;	
 	
 	import Column from './components/Column.svelte'
 	import Line from './components/Line.svelte';
@@ -26,11 +20,10 @@
 	import SharedTooltip from './components/SharedTooltip.percent-range.svelte';
 	
 	import Minidays from './components/Minidays.svelte';
-	
-	let countries = ['Norway', 'Sweden', 'Germany', 'France', 'USA']
-	
+		
 	let options = { day: 'numeric', month: 'numeric', year: '2-digit' }
 	const formatTickX = d => new Date(d).toLocaleDateString('no-NO', options);
+	const formatTickY = d => new Intl.NumberFormat("no-NO").format(d);
 	const stroke = '#ffa600';
 	const mainLineStrokeWidth = 5;
 	const xTickColor = "#ffa600";
@@ -117,21 +110,24 @@
 	
 	$: currAvg = currAvgIndex > 0 ? shavedData[currAvgIndex].avg : false
 
+	import LineBrush from './components/LineBrush.svelte'
+
+
 </script>
 <article class="text">
 	<h2>
 		{#if range>1}
-			Gjennomsnitt diagnoser siste {range}-dagers-periode: 
+			Gjennomsnitt diagnoser siste {range}-dagersperiode: 
 		{:else}
 			Diagnoser siste dag:
 		{/if}
 		{#if currAvg}
 			{#if range>1}
 				<span style="color: {textHighlightColor}">
-					{currAvg}
+					{new Intl.NumberFormat("no-NO").format(currAvg)}
 				</span>
 			{:else}
-				{currAvg}
+				{new Intl.NumberFormat("no-NO").format(currAvg)}
 			{/if}
 		{:else} 
 			Ikke noe gjennomsnitt for valgt periode.
@@ -206,6 +202,7 @@
 						<AxisY 
 							ticks={4}
 							gridlines={true}
+							formatTick={formatTickY}
 							{yTickColor}
 						/>
 					</Html>
@@ -235,7 +232,7 @@
 				<ScaledSvg>
 					<Line
 						stroke={stroke}
-						strokeWidth={mainLineStrokeWidth}
+						strokeWidth=2
 					/>
 					<Area
 						fill={stroke}
@@ -258,6 +255,7 @@
 						ticks={4}
 						gridlines={true}
 						{yTickColor}
+						formatTick={formatTickY}
 					/>
 				</Html>
 				<Html>
@@ -302,6 +300,7 @@
 						ticks={0}
 						gridlines={false}
 						{yTickColor}
+						formatTick={formatTickY}
 					/>
 				</Html>
 				<Html>
@@ -316,27 +315,36 @@
 			</div>
 	</article>
 	<article class="controls">
-		<Brush 
+		<!-- <Brush 
 			bind:min={start}
 			bind:max={end}
+		/> -->
+		<LineBrush 
+			bind:min={start}
+			bind:max={end}
+			x={'date'}
+			y={'new'}
+			data={data.data.new}
+			{highlightColor}
 		/>
 	</article>
 
 </section>
 <article class="text" style="padding-top:1.5rem">
-	<p>Nylig data for utvalgte land. Tallet viser nylige tilfeller per million.</p>
 	<div class="themed">
 		<Select
 			{items}
 			bind:selectedValue
 			isMulti={true}
+			isClearable={false}
 		></Select>
 	</div>
+	<p>Nylig data for landene i utvalget over (du kan legge til flere). Tallet under navnet viser nylige tilfeller per million (definert av valgt periode for glidende gjennomsnitt).</p>
 </article>
 
 <section class="minidays">
 {#each selectedValue as country}
-	<Minidays {range} {start} {end} country={country.value} />
+	<Minidays {range} {start} {end} country={country.value} {highlightColor} />
 {/each}
 </section>
 <style lang="scss">

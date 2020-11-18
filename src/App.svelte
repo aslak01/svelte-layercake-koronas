@@ -19,7 +19,7 @@
 	const highlightColor = "#ffa600"
 	
 	let selectedValue = {label: "Norge", value: "nor"}
-	$: console.log(selectedValue)
+	// $: console.log(selectedValue)
 	// import ChartsKart1 from './ChKart.svelte';
 	
 	let request
@@ -54,7 +54,7 @@
 		
 		{#await $response}...{:then data}
 			<strong style="color: {highlightColor}">
-				{data.info.lastReportCases}
+				{new Intl.NumberFormat("no-NO").format(data.info.lastReportCases)}
 			</strong>
 		{/await}
 		fra siste rapport,
@@ -77,7 +77,7 @@
 			<SpinLine size="60" color="#FF3E00" unit="px"></SpinLine>
 		</div>
 	{:then data}
-		<ChartsJHday {data} />
+		<ChartsJHday {data} {highlightColor} />
 	{/await}
 	
 	{#await $response}
@@ -88,22 +88,19 @@
 			<SpinLine size="60" color="#FF3E00" unit="px"></SpinLine>
 		</div>
 	{:then data}
-		<ChartsJHtot data={data} />
+		<ChartsJHtot {data} {highlightColor} />
 	{/await}
 
 
 	{#await $response2}
-	<article class="text">
-		<h2>Mobilitetsdata fra Apple</h2>
-	</article>
-		<div class="restricted">
-			<SpinLine size="60" color="#FF3E00" unit="px"></SpinLine>
-		</div>
+		<article class="text">
+			Henter mobilitetsdata.
+		</article>
 	{:then data}
 		<ChartsApple {data}/>
 	{/await}
 
-	
+	{#if selectedValue.value === 'nor'}
 	{#await $response3}
 	<article class="text">
 		<h2>Sykdom rapportert til MSIS, 2016–2020</h2>
@@ -114,15 +111,12 @@
 	{:then data3}
 		<ChartsFHI koronaVirus={data3.infected} />
 	{/await}
-  
+  {/if}
  
 	 <footer>
 		 <article class="text">
 			 <p><span>
-				 Denne siden holdes automatisk oppdatert med de siste tallene fra <a href="https://coronavirus.jhu.edu">Johns Hopkins-databasen (JHUCSSE)</a>. Disse er verdensomspennende, så de kan være litt i utakt med <a href="https://www.fhi.no/sv/smittsomme-sykdommer/corona/dags--og-ukerapporter/dags--og-ukerapporter-om-koronavirus/">FHI sine tall</a>, men stort sett ganske nært opptil. De siste FHI-tallene jeg har tilgjengelig viser
-				 {#await $response3}...{:then data3}{data3.infected}{/await}
-				 totale diagnoser (sist oppdatert
-				 {#await $response3}...{:then data3}{new Date(data3.lastUpdatedAtSource).toLocaleDateString('no-NO')}{/await}).
+				 Denne siden holdes automatisk oppdatert med de siste tallene fra <a href="https://coronavirus.jhu.edu">Johns Hopkins-databasen (JHUCSSE)</a>. De samler tallene sine fra diverse offentlige databaser som ikke alltid er helt enige med hverandre. Mindre avvik kan derfor forekomme, men tendensene er som regel de samme. JHUCSSE- og Apple-tall via <a href="http://disease.sh">disease.sh</a>.
 			 </span></p>
 		 </article>
 	 </footer>
@@ -152,6 +146,11 @@ body {
 background: linear-gradient(207deg, rgba(26,31,41,1) 38%, rgba(87,52,88,1) 100%); */
 }
 
+/* header {
+	position: sticky;
+	position: -webkit-sticky;
+	top: 0;
+} */
 
 	h2 {
 		padding-top: 30px;

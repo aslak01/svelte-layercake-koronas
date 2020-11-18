@@ -13,14 +13,15 @@
 	export let country = 'nor';
 	let countryData = getData('https://restcountries.eu/rest/v2/alpha/' + country)
 
-	const stroke = 'tomato';
 	const strokeWidth = 1
 	
 	export let data
 	export let range = 7;
 	export let start = 0;
 	export let end = 1;
+	export let highlightColor;
 
+	const stroke = highlightColor;
 	
 	// moving average:
 	// https://stackoverflow.com/questions/60211628/moving-average-of-time-series-objects-in-array	
@@ -167,7 +168,7 @@
 	}
 	.name {
 		display: block;
-		font-size: 1rem;
+		font-size: clamp(.8rem, 1vw, 1.2rem);
 		margin: 0;
 		white-space: nowrap;
 	}

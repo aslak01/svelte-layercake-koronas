@@ -23,6 +23,6 @@
 	<Select
 		{items}
 		bind:selectedValue
-		isClearable='false'
+		isClearable={false}
 	></Select>
 </div>

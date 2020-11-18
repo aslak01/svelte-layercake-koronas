@@ -18,6 +18,7 @@
 	const xTickColor = "#ffa600";
 	const yTickColor = "#ffa600";
 	const textHighlightColor = "#ffa600";
+	export let highlightColor;
 
 	export let data
 	
@@ -46,8 +47,6 @@
 	
 	$: lastReportShaved = shavedData[shavedData.length-1].date.toLocaleDateString('no-NO')
 	let options = { day: 'numeric', month: 'numeric', year: '2-digit' }
-	$: firstRepShort = shavedData[0].date.toLocaleDateString('no-NO', options)
-	$: lastRepShort = shavedData[shavedData.length-1].date.toLocaleDateString('no-NO', options)
 	$: lastDay = new Intl.NumberFormat("no-NO").format(shavedData[shavedData.length-1].total)
 	$: lastDayNew = new Intl.NumberFormat("no-NO").format(shavedData[shavedData.length-1].total - shavedData[shavedData.length-2].total)
 	
@@ -88,7 +87,7 @@
 	
 	
 	import ChMiniTot from './ChMiniTot.svelte';
-	
+	import LineBrush from './components/LineBrush.svelte'
 	
 	
 </script>
@@ -158,9 +157,13 @@
 		</div>
 	</article>
 	<article class="controls">
-		<Brush 
+		<LineBrush 
 			bind:min={start}
 			bind:max={end}
+			x={'date'}
+			y={'total'}
+			data={data.data.total}
+			{highlightColor}
 		/>
 	</article>
 <!-- </section>
