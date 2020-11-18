@@ -10,8 +10,8 @@
 	import AxisX from './components/AxisX.html.svelte';
 	import AxisY from './components/AxisY.html.svelte';
 	
-	export let country = 'Norway';
-	let countryData = getData('https://restcountries.eu/rest/v2/name/' + country)
+	export let country = 'nor';
+	let countryData = getData('https://restcountries.eu/rest/v2/alpha/' + country)
 
 	const stroke = 'tomato';
 	const strokeWidth = 1
@@ -102,8 +102,8 @@
 		{:then data}
 			{#await $countryData}...
 			{:then cData}
-			<h4 class="name">{cData[0].nativeName}</h4>
-			<span class="insidens">{Number.parseFloat(currAvg / cData[0].population).toPrecision(2)}</span>
+			<h4 class="name">{cData.nativeName}</h4>
+			<span class="insidens">{Number.parseFloat(currAvg / cData.population).toPrecision(2)}</span>
 			{/await}
 			<div class="chart">
 				<div class="chart-container">

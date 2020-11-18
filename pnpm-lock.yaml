@@ -22,6 +22,7 @@ devDependencies:
   svelte: 3.29.7
   svelte-loading-spinners: 0.1.1
   svelte-preprocess: 4.5.2_610ea32b060cdacb6f003269a8c0f401
+  svelte-select: 3.14.1
   yootils: 0.0.17
 lockfileVersion: 5.2
 packages:
@@ -1933,6 +1934,10 @@ packages:
     requiresBuild: true
     resolution:
       integrity: sha512-ClUX5NecnGBwI+nJnnBvKKy0XutCq5uHTIKe6cPhpvuOj9AAnyvef9wOZAE93yr85OKPutGCNIJa/X1TrJ7O0Q==
+  /svelte-select/3.14.1:
+    dev: true
+    resolution:
+      integrity: sha512-YurQfJBWgemesILZy5bQeB2vaq7J9empOjVC3VXJPsFUog+bW8HWHd+0n6mPXkvHQI2xFfxtqGg3rDalVbDFcA==
   /svelte/3.29.7:
     dev: true
     engines:
@@ -2142,4 +2147,5 @@ specifiers:
   svelte: ^3.29.7
   svelte-loading-spinners: ^0.1.1
   svelte-preprocess: ^4.5.2
+  svelte-select: ^3.14.1
   yootils: ^0.0.17

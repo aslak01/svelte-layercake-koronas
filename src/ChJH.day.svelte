@@ -3,7 +3,18 @@
 	import { LayerCake, ScaledSvg, Html, uniques } from 'layercake';
 	import { scaleBand } from 'd3-scale';
 	
+
+	import Select from 'svelte-select'
+
+	import { countries as items } from './utils/searchcountries.js'
+	
+	let selectedValue = [{label: "Sverige", value: "swe"}, {label: "Russland", value: "rus"}, {label: "Frankrike", value: "fra"}, {label: "USA", value: "usa"}];
+	$: console.log(selectedValue)
+
+
+	
 	import DualSlider from './utils/DualSlider.svelte';
+	
 	
 	import Column from './components/Column.svelte'
 	import Line from './components/Line.svelte';
@@ -314,10 +325,20 @@
 	</article>
 
 </section>
-<article class="text" style="padding-top:1.5rem"><p>Nylig data for utvalgte land. Tallet er siste periode av glidende gjennomsnitt delt på befolkning.</p></article>
+<article class="text" style="padding-top:1.5rem">
+	<p>Nylig data for utvalgte land. Tallet er siste periode av glidende gjennomsnitt delt på befolkning.</p>
+	<div class="themed">
+		<Select
+			{items}
+			bind:selectedValue
+			isMulti={true}
+		></Select>
+	</div>
+</article>
+
 <section class="minidays">
-{#each countries as country}
-	<Minidays {range} {start} {end} {country} />
+{#each selectedValue as country}
+	<Minidays {range} {start} {end} country={country.value} />
 {/each}
 </section>
 <style lang="scss">
@@ -347,6 +368,12 @@
 			margin-right: .5rem;
 		}
 	}
+	.themed {
+		--itemColor: #333;
+		--itemIsActiveColor: #333;
+		color: #333;
+	}
+
 </style>
 
 

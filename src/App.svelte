@@ -18,13 +18,13 @@
 	
 	const highlightColor = "#ffa600"
 	
-	let selectedCountry = {id: 578, name: "Norge", alpha2: "no", alpha3: "nor"}
-	$: console.log(selectedCountry)
+	let selectedValue = {label: "Norge", value: "nor"}
+	$: console.log(selectedValue)
 	// import ChartsKart1 from './ChKart.svelte';
 	
 	let request
 	
-	$: selectedCountry ? request = selectedCountry.alpha3 : request = "Norway"
+	$: selectedValue ? request = selectedValue.value : request = "Norway"
 	
 	$: response = getData2("https://disease.sh/v3/covid-19/historical/" + request + "?lastdays=all")
 	$: response2 = getData("https://disease.sh/v3/covid-19/apple/countries/" + request + "/All");
@@ -38,7 +38,7 @@
 		<Coronavirus32 
 			style="fill: {highlightColor}"
 		/>
-		Korona&shy;virus i </h1><CountrySearch bind:selectedCountry />
+		Korona&shy;virus i </h1><CountrySearch bind:selectedValue />
 	<!-- <ChartsKart1 /> -->
 	<p>
 		
@@ -50,7 +50,7 @@
 			</strong>
 		{/await}
 		
-		diagnoser av Covid-19 i {selectedCountry.name}. Av disse var 
+		diagnoser av Covid-19 i {selectedValue.label}. Av disse var 
 		
 		{#await $response}...{:then data}
 			<strong style="color: {highlightColor}">
