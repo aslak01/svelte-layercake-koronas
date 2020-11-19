@@ -112,6 +112,12 @@
 
 	import LineBrush from './components/LineBrush.svelte'
 
+	let modeSelect = [
+		{ label: "Begge", value: 3 },
+		{ label: "Dager", value: 2 },
+		{ label: "Glidende gjennomsnitt", value: 1 },
+	]
+
 
 </script>
 <article class="text">
@@ -143,26 +149,7 @@
 			{/if} 
 		</span>
 	</p>
-</article>
-<article class="controls">
-	<label>Endre periode for glidende gjennomsnitt:<input type="range" min="1" max="60" bind:value={range} /></label>
-	<div class="radios">
-		<label for="radio">Vis: </label>
-		<div id="radio">
-		<label>
-			<input type=radio bind:group={charts} value={3}>
-			Begge
-		</label>
-		<label>
-			<input type=radio bind:group={charts} value={2}>
-			Kun dagvis
-		</label>
-		<label>
-			<input type=radio bind:group={charts} value={1}>
-			Kun glidende gjennomsnitt
-		</label>
-		</div>
-	</div>
+
 </article>
 
 <section>
@@ -327,19 +314,26 @@
 			data={data.data.new}
 			{highlightColor}
 		/>
+	
+	<div class="gjennomsnitter">
+		<label>Endre periode for glidende gjennomsnitt:<input type="range" min="1" max="60" bind:value={range} /></label>
+	</div>
+	
+	<div class="radios">
+		<label for="radio">Vis: </label>
+		<select id="radio" bind:value={charts}>
+			{#each modeSelect as {label, value}}
+			<option value={value}>{label}</option>
+			{/each}
+		</select>
+	</div>
+
 	</article>
 
 </section>
-<article class="text" style="padding-top:1.5rem">
-	<div class="themed">
-		<Select
-			{items}
-			bind:selectedValue
-			isMulti={true}
-			isClearable={false}
-		></Select>
-	</div>
-	<p>Nylig data for landene i utvalget over (du kan legge til flere). Tallet under navnet viser nylige tilfeller per million (definert av valgt periode for glidende gjennomsnitt).</p>
+<article class="text">
+	<h2 style="margin:0;padding:0;">Sammenlignet med andre land</h2>
+	<p><span>Tallet under landets navn er tilfeller per million innbyggere i den siste perioden glidende gjennomsnitt (definert ovenfor).</span></p>
 </article>
 
 <section class="minidays">
@@ -347,6 +341,21 @@
 	<Minidays {range} {start} {end} country={country.value} {highlightColor} />
 {/each}
 </section>
+
+<article class="text" style="padding-top:1.5rem">
+	<p><span>Legg til eller fjern land, du kan søke etter land på norsk, engelsk, tysk og fransk.</span></p>
+	<div class="themed">
+		<Select
+			{items}
+			bind:selectedValue
+			isMulti={true}
+			isClearable={false}
+			listPlacement='bottom'
+		></Select>
+	</div>
+</article>
+
+
 <style lang="scss">
 	.chart {
 		position: relative;
@@ -380,6 +389,19 @@
 		color: #333;
 		--inputColor: white;
 		--background: transparent;
+	}
+	.gjennomsnitter {
+		display: inline-block;
+		width: 45%;
+		min-width: 200px;
+		max-width: 500px;
+		margin-right: 3rem;
+	}
+	.radios {
+		display: inline-block;
+		width: 45%;
+		min-width: 200px;
+		max-width: 500px;
 	}
 
 </style>

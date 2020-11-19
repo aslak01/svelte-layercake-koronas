@@ -108,7 +108,7 @@
 		{:then data}
 			{#await $countryData}...
 			{:then cData}
-			<h4 class="name">{cData.nativeName}</h4>
+			<h3 class="name">{cData.nativeName}</h3>
 			<span class="insidens">{insidens(currAvg, cData.population)}</span>
 			{/await}
 			<div class="chart">

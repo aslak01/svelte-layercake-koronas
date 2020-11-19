@@ -180,9 +180,6 @@
 	</p>
 <p><span>{#if range>1}Glidende gjennomsnitt over {range} dager{:else}Alle tall{/if} mellom {mvAvgDtStart} og {mvAvgDtEnd}.</span></p>
 </article>
-<article class="controls">
-	<label>Endre periode for glidende gjennomsnitt:<input type="range" min="1" max="60" bind:value={range} /></label>
-</article>
 <section>
 	<article class="topcontrols" style="text-align: center">
 			<Car32
@@ -240,11 +237,8 @@
 						gridlines={true}
 						{yTickColor}
 					/>
-				</Html>
-				
-					<!-- need to output movingavg in data2's original format for this to work
-					ignoring for now -->
-					<Html>
+				</Html>				
+				<Html>
 					<SharedTooltip
 						formatTitle={formatTickX}
 						dataset={MovingAverageTooltip}
@@ -252,13 +246,26 @@
 				</Html>
 			</LayerCake>
 		</div>
+	</article>	
+	<article class="controls">
+		<div class="gjennomsnitter">
+			<label>Endre periode for glidende gjennomsnitt:<input type="range" min="1" max="60" bind:value={range} /></label>
+		</div>
 	</article>
 
 </section>
+
 <style>
 
 strong.modus{
 	cursor:pointer;
 }
+.gjennomsnitter {
+	margin-top: 3rem;
+	width: 45%;
+	min-width: 200px;
+	max-width: 500px;
+}
+
 
 </style>

@@ -40,7 +40,7 @@
 		/>
 		Korona&shy;virus i </h1><CountrySearch bind:selectedValue />
 	<!-- <ChartsKart1 /> -->
-	<p>
+	<h2 style="font-weight: normal;">
 		
 		Det er nå meldt
 		
@@ -50,7 +50,11 @@
 			</strong>
 		{/await}
 		
-		diagnoser av Covid-19 i {selectedValue.label}. Av disse var 
+		diagnoser av Covid-19 i 
+		
+		<strong style="color: {highlightColor}">{selectedValue.label}</strong>. 
+		
+		Av disse var 
 		
 		{#await $response}...{:then data}
 			<strong style="color: {highlightColor}">
@@ -59,11 +63,9 @@
 		{/await}
 		fra siste rapport,
 		{#await $response}...{:then data}
-			<strong>
-				{data.info.lastReport.toLocaleDateString('no-NO')}
-			</strong>
-		{/await}.
-	</p>
+			{data.info.lastReport.toLocaleDateString('no-NO')}.
+		{/await}
+	</h2>
 </article>
 </header>
 
@@ -144,6 +146,10 @@ body {
 	background: $basecol;
 /* background: rgb(26,31,41);
 background: linear-gradient(207deg, rgba(26,31,41,1) 38%, rgba(87,52,88,1) 100%); */
+}
+
+main {
+	max-width: 100%; overflow-x: hidden;
 }
 
 header {

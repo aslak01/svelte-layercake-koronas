@@ -86,6 +86,7 @@
 	
 	export let highlightColor;
 	
+
 	
 </script>
 
@@ -107,10 +108,10 @@
 		</Svg>
 		</LayerCake>
 	</div>
-		<div class="brush-inner" on:mousedown|stopPropagation={move} style="left: {left}%; right: {right}%;"></div>
-		<!-- border-right: 4px solid {highlightColor}; border-left: 4px solid {highlightColor}; -->
-		<div class="brush-handle" on:mousedown|stopPropagation={adjust_min} style="left: {left}%;"></div>
-		<div class="brush-handle" on:mousedown|stopPropagation={adjust_max} style="right: {right}%;"></div>
+	<div class="brush-inner" on:mousedown|stopPropagation={move} on:touchstart|stopPropagation={move} style="left: {left}%; right: {right}%;"></div>
+	<!-- border-right: 4px solid {highlightColor}; border-left: 4px solid {highlightColor}; -->
+	<div class="brush-handle" on:mousedown|stopPropagation={adjust_min} on:touchstart|stopPropagation={adjust_min} style="left: {left}%;"></div>
+	<div class="brush-handle" on:mousedown|stopPropagation={adjust_max} on:touchstart|stopPropagation={adjust_max} style="right: {right}%;"></div>
 	{/if}
 </div>
 
@@ -133,7 +134,6 @@
 	}
 	
 	.brush-inner {
-		box-sizing: margin-box;
 		position: absolute;
 		height: 100%;
 		cursor: move;
@@ -151,7 +151,7 @@
 		position: absolute;
 		content: '';
 		width: 8px;
-		left: -4px;
+		left: -8px;
 		height: 100%;
 		background: #ffa600;
 	}
