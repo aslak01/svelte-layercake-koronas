@@ -146,11 +146,12 @@ body {
 background: linear-gradient(207deg, rgba(26,31,41,1) 38%, rgba(87,52,88,1) 100%); */
 }
 
-/* header {
-	position: sticky;
+header {
+	/* position: sticky;
 	position: -webkit-sticky;
-	top: 0;
-} */
+	top: 0; */
+	margin-top: 4rem;
+}
 
 	h2 {
 		padding-top: 30px;

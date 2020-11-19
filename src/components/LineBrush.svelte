@@ -76,7 +76,7 @@
 	$: left = 100 * min;
 	$: right = 100 * (1 - max);
 	
-	import { LayerCake, ScaledSvg, Svg } from 'layercake';
+	import { LayerCake, Svg } from 'layercake';
 	import Line from './Line.svelte';
 	import Area from './Area.svelte';
 
@@ -100,13 +100,17 @@
 				strokeWidth=1
 				stroke='white'
 			/>
-			<Area />
+			<Area 
+				opacity='.6'
+				fill='white'
+			/>
 		</Svg>
 		</LayerCake>
 	</div>
-		<div class="brush-inner" on:mousedown|stopPropagation={move} style="left: {left}%; right: {right}%; border-right: 4px solid {highlightColor}; border-left: 4px solid {highlightColor};"></div>
-		<div class="brush-handle" on:mousedown|stopPropagation={adjust_min} style="left: {left}%; background: {highlightColor}"></div>
-		<div class="brush-handle" on:mousedown|stopPropagation={adjust_max} style="right: {right}%; background: {highlightColor}"></div>
+		<div class="brush-inner" on:mousedown|stopPropagation={move} style="left: {left}%; right: {right}%;"></div>
+		<!-- border-right: 4px solid {highlightColor}; border-left: 4px solid {highlightColor}; -->
+		<div class="brush-handle" on:mousedown|stopPropagation={adjust_min} style="left: {left}%;"></div>
+		<div class="brush-handle" on:mousedown|stopPropagation={adjust_max} style="right: {right}%;"></div>
 	{/if}
 </div>
 
@@ -146,9 +150,9 @@
 	.brush-handle::before {
 		position: absolute;
 		content: '';
-		width: 4px;
+		width: 8px;
 		left: -4px;
 		height: 100%;
-		/* background: white; */
+		background: #ffa600;
 	}
 </style>
