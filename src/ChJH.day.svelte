@@ -117,8 +117,10 @@
 		{ label: "Dager", value: 2 },
 		{ label: "Glidende gjennomsnitt", value: 1 },
 	]
-
-
+	
+	let ppm;
+	let max;
+	
 </script>
 <article class="text">
 	<h2>
@@ -129,11 +131,11 @@
 		{/if}
 		{#if currAvg}
 			{#if range>1}
-				<span style="color: {textHighlightColor}">
+				<span class="sistedag" style="color: {textHighlightColor}">
 					{new Intl.NumberFormat("no-NO").format(currAvg)}
 				</span>
 			{:else}
-				{new Intl.NumberFormat("no-NO").format(currAvg)}
+				<span class="sistedag">{new Intl.NumberFormat("no-NO").format(currAvg)}</span>
 			{/if}
 		{:else} 
 			Ikke noe gjennomsnitt for valgt periode.
@@ -333,14 +335,18 @@
 </section>
 <article class="text">
 	<h2 style="margin:0;padding:0;">Sammenlignet med andre land</h2>
-	<p><span>Tallet under landets navn er tilfeller per million innbyggere i den siste perioden glidende gjennomsnitt (definert ovenfor).</span></p>
+	{#if selectedValue}
+		<p><span>Tallet under landets navn er tilfeller per million innbyggere i den siste perioden glidende gjennomsnitt (definert ovenfor).</span></p>
+	{/if}
 </article>
 
-<section class="minidays">
-{#each selectedValue as country}
-	<Minidays {range} {start} {end} country={country.value} {highlightColor} />
-{/each}
-</section>
+{#if selectedValue}
+	<section class="minidays">
+	{#each selectedValue as country}
+		<Minidays {range} {start} {end} country={country.value} {highlightColor}  />
+	{/each}
+	</section>
+{/if}
 
 <article class="text" style="padding-top:1.5rem">
 	<p><span>Legg til eller fjern land, du kan søke etter land på norsk, engelsk, tysk og fransk.</span></p>
@@ -349,7 +355,6 @@
 			{items}
 			bind:selectedValue
 			isMulti={true}
-			isClearable={false}
 			listPlacement='bottom'
 		></Select>
 	</div>
@@ -383,6 +388,12 @@
 			margin-right: .5rem;
 		}
 	}
+@media only screen and (max-width: 800px) {
+	.sistedag {
+		display: block;
+	}
+}
+
 	.themed {
 		--itemColor: #333;
 		--itemIsActiveColor: #333;

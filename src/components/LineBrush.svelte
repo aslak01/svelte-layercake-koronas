@@ -99,11 +99,11 @@
 		<Svg>
 			<Line
 				strokeWidth=1
-				stroke='white'
+				stroke='ghostwhite'
 			/>
 			<Area 
-				opacity='.6'
-				fill='white'
+				opacity='.5'
+				fill='ghostwhite'
 			/>
 		</Svg>
 		</LayerCake>
@@ -130,29 +130,34 @@
 		width: 100%;
 		height: 2em;
 		margin: 0 0 1em 0;
-		border: 1px solid #333;
+		/* border: 1px solid #333; */
+		overflow: hidden;
+		/* background: black; */
 	}
 	
 	.brush-inner {
 		position: absolute;
 		height: 100%;
 		cursor: move;
-		background: #ffffff30
+		/* background: #ffffff30; */
+		/* background: gainsboro; */
+		/* background: #12141b; */
+		background: ghostwhite;
+		mix-blend-mode: difference;
 }
 	
 	.brush-handle {
 		position: absolute;
-		width: 0;
+		width: 3px;
 		height: 100%;
 		cursor: ew-resize;
 	}
 	
-	.brush-handle::before {
+	/* .brush-handle::before {
 		position: absolute;
 		content: '';
-		width: 8px;
-		left: -8px;
+		width: 3px;
 		height: 100%;
-		background: #ffa600;
-	}
+		background: #2b8dcf;
+	} */
 </style>

@@ -10,12 +10,13 @@
 	import AxisX from './components/AxisX.html.svelte';
 	import AxisY from './components/AxisY.html.svelte';
 	
-	export let country = 'nor';
-	let countryData = getData('https://restcountries.eu/rest/v2/alpha/' + country)
+	
 
 	const strokeWidth = 1
 	
 	export let data
+	export let cData
+	export let country
 	export let range = 7;
 	export let start = 0;
 	export let end = 1;
@@ -88,7 +89,10 @@
 	$: extents = calcExtents(shavedData,
 		 [{field: 'y', accessor: d => Math.max(d.new) }]
 		)
-	$: max = Math.max.apply(Math, shavedData.map(d => d.avg ))
+	
+
+	
+	
 	// https://stackoverflow.com/questions/33268863/find-last-matching-object-in-array-of-objects/49199917#49199917
 	
 	let currAvgIndex
@@ -99,17 +103,27 @@
 	let insidens = function (avg, pop) {
 		return Number.parseFloat(((avg / pop)).toPrecision(3)*1000000).toFixed()
 	}
-
-
+	
+	$: ppm = insidens(currAvg, cData.population)
+	$: max = Math.max.apply(Math, shavedData.map(d => d.avg ))
+	
+	import { minidayStore } from './store.js';
+	$: $minidayStore.max = max
+	$: $minidayStore.ppm = ppm
+	
+	$: console.log($minidayStore)
+	
 </script>
 
 	<article class="enhet">
 		{#await data}...
 		{:then data}
-			{#await $countryData}...
+			{#await cData}...
 			{:then cData}
-			<h3 class="name">{cData.nativeName}</h3>
-			<span class="insidens">{insidens(currAvg, cData.population)}</span>
+			<div class="text">
+				<h3 class="name">{cData.nativeName}</h3>
+				<span class="insidens">{ppm}</span>
+			</div>
 			{/await}
 			<div class="chart">
 				<div class="chart-container">
@@ -160,16 +174,30 @@
 		width: 100px;
 		height: 60px;
 		padding-top: 0;
+		z-index: 10;
 	}
 	.chart-container {
 		position: relative;
 		width: 100%;
 		height: 100%;
 	}
+	.text {
+		height: 30px;
+		position: relative;
+	}
 	.name {
+		position: absolute;
+		top: 0;
 		display: block;
-		font-size: clamp(.8rem, 1vw, 1.2rem);
+		font-weight: normal;
+		font-size: clamp(.8rem, 1%, 1.2rem);
 		margin: 0;
-		white-space: nowrap;
+		/* white-space: nowrap; */
+	}
+	.insidens {
+		font-size: .7rem;
+		position: absolute;
+		top: .8rem;
+		right: 0;
 	}
 </style>

@@ -8,6 +8,12 @@
 	const response3 = getData("https://api.apify.com/v2/key-value-stores/3qlmMu1XN2ZLoVIQt/records/LATEST?disableRedirect=true");
 	
 	
+	// todo:
+	// solid line at 0 in apple chart
+	// error handling apple chart
+	// brush apple chart
+	// organising minidays by insidens
+	
 	
 	import ChartsJHday from './ChJH.day.svelte';
 	import ChartsJHtot from './ChJH.tot.svelte';
@@ -129,6 +135,7 @@
 	@use "sass:color";
 
 	$basecol: #1a1f29;
+	/* $darker: #12141b; */
 	$darker: scale-color(#1a1f29, $lightness: -12%);
 
 body {
