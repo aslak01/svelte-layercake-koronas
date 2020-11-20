@@ -7,8 +7,9 @@
 	import Select from 'svelte-select'
 
 	import { countries as items } from './utils/searchcountries.js'
-	
-	let selectedValue = [{label: "Sverige", value: "swe"}, {label: "Russland", value: "rus"}, {label: "Frankrike", value: "fra"}, {label: "USA", value: "usa"}, {label: "Iran", value: "irn"}];
+	export let mainSelection;
+
+	let selectedValue = [mainSelection, {label: "Sverige", value: "swe"}, {label: "Russland", value: "rus"}, {label: "Frankrike", value: "fra"}, {label: "USA", value: "usa"}, {label: "Iran", value: "irn"}];
 
 	export let highlightColor;	
 	
@@ -40,7 +41,7 @@
 	const sortDates = (data) => data.sort((a, b) => new Date(a.date) - new Date (b.date));
 	const getAverage = (data) => data.reduce((acc, val) => acc + val.new, 0) / data.length;
 	
-	$: computeMovingAverage = (data, period) => {
+	const computeMovingAverage = (data, period) => {
 		const movingAverages = [];
 		const sortedData = sortDates(data);
 
@@ -115,11 +116,23 @@
 	let modeSelect = [
 		{ label: "Begge", value: 3 },
 		{ label: "Dager", value: 2 },
-		{ label: "Glidende gjennomsnitt", value: 1 },
+		{ label: "Glidende gjennomsnitt", value: 1 }
+	]
+	let skalaSelect = [
+		{ label: "Individuell absolutt skala", value: 1 },
+		{ label: "Delt absolutt skala", value: 2 },
+		{ label: "Delt relativ skala (per million)", value: 3 },
 	]
 	
-	let ppm;
-	let max;
+	let maximum = [];
+	let pMmax = []
+	let sharedMax
+	let pMsharedMax
+	$: sharedMax = maximum[0] != undefined ? Math.max.apply(Math, maximum) : undefined
+	$: pMsharedMax = pMmax[0] != undefined ? Math.max.apply(Math, pMmax) : undefined
+	let sharedScale = false;
+	let pMsharedScale = false;
+	let skala = 1
 	
 </script>
 <article class="text">
@@ -337,13 +350,20 @@
 	<h2 style="margin:0;padding:0;">Sammenlignet med andre land</h2>
 	{#if selectedValue}
 		<p><span>Tallet under landets navn er tilfeller per million innbyggere i den siste perioden glidende gjennomsnitt (definert ovenfor).</span></p>
+		<label for="skala">Skala: 
+			<select id="skala" bind:value={skala}>
+				{#each skalaSelect as {label, value}}
+					<option value={value}>{label}</option>
+				{/each}
+			</select>
+		</label>
 	{/if}
 </article>
 
 {#if selectedValue}
 	<section class="minidays">
-	{#each selectedValue as country}
-		<Minidays {range} {start} {end} country={country.value} {highlightColor}  />
+	{#each selectedValue as country, i}
+		<Minidays {range} {start} {end} country={country.value} {highlightColor} bind:maximum={maximum[i]} bind:pMmax={pMmax[i]} {pMsharedMax} {sharedMax} {skala} />
 	{/each}
 	</section>
 {/if}
@@ -393,7 +413,9 @@
 		display: block;
 	}
 }
-
+	label {
+		font-size: .8rem;
+	}
 	.themed {
 		--itemColor: #333;
 		--itemIsActiveColor: #333;

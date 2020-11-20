@@ -85,7 +85,7 @@
 			<SpinLine size="60" color="#FF3E00" unit="px"></SpinLine>
 		</div>
 	{:then data}
-		<ChartsJHday {data} {highlightColor} />
+		<ChartsJHday {data} {highlightColor} mainSelection={selectedValue} />
 	{/await}
 	
 	{#await $response}

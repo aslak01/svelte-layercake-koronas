@@ -109,7 +109,6 @@
 		</LayerCake>
 	</div>
 	<div class="brush-inner" on:mousedown|stopPropagation={move} on:touchstart|stopPropagation={move} style="left: {left}%; right: {right}%;"></div>
-	<!-- border-right: 4px solid {highlightColor}; border-left: 4px solid {highlightColor}; -->
 	<div class="brush-handle" on:mousedown|stopPropagation={adjust_min} on:touchstart|stopPropagation={adjust_min} style="left: {left}%;"></div>
 	<div class="brush-handle" on:mousedown|stopPropagation={adjust_max} on:touchstart|stopPropagation={adjust_max} style="right: {right}%;"></div>
 	{/if}
@@ -133,6 +132,7 @@
 		/* border: 1px solid #333; */
 		overflow: hidden;
 		/* background: black; */
+		background: #1a1f29;
 	}
 	
 	.brush-inner {
@@ -148,7 +148,7 @@
 	
 	.brush-handle {
 		position: absolute;
-		width: 3px;
+		width: 15px;
 		height: 100%;
 		cursor: ew-resize;
 	}
@@ -156,8 +156,11 @@
 	/* .brush-handle::before {
 		position: absolute;
 		content: '';
-		width: 3px;
+		width: 5px;
 		height: 100%;
-		background: #2b8dcf;
+		background: white;
+		border-left: 2px solid tomato;
+		border-right: 2px solid tomato;
+		
 	} */
 </style>
