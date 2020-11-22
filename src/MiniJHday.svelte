@@ -115,10 +115,7 @@
 			{items}
 			bind:selectedValue
 			isMulti={true}
-			isCreatable={true}
-			showIndicator={true}
 			listPlacement='bottom'
-			on:select={handleSelection}
 		></Select>
 	</div>
 </article>
