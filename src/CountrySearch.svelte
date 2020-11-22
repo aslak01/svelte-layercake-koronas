@@ -24,5 +24,6 @@
 		{items}
 		bind:selectedValue
 		isClearable={false}
+		showIndicator={true}
 	></Select>
 </div>

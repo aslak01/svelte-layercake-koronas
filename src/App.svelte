@@ -44,7 +44,8 @@
 		<Coronavirus32 
 			style="fill: {highlightColor}"
 		/>
-		Korona&shy;virus i </h1><CountrySearch bind:selectedValue />
+		Korona&shy;virus i </h1><CountrySearch bind:selectedValue
+ />
 	<!-- <ChartsKart1 /> -->
 	<h2 style="font-weight: normal;">
 		

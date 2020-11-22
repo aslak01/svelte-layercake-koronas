@@ -8,12 +8,7 @@ export let start = 0;
 export let end = 1;
 export let country;
 export let highlightColor;
-
-export let skala = 1
-export let maximum
-export let sharedMax
-export let pMsharedMax
-export let pMmax
+export let index;
 
 
 let req = getData2("https://disease.sh/v3/covid-19/historical/" + country + "?lastdays=all");
@@ -26,6 +21,6 @@ let cData = getData('https://restcountries.eu/rest/v2/alpha/' + country);
 
 	{#await $req}...{:then data}
 		{#await $cData}...{:then cData}
-			<ChDayMini {range} {start} {end} {country} {data} {cData} {highlightColor} bind:maximum bind:pMmax {sharedMax} {pMsharedMax} {skala} />
+			<ChDayMini {range} {start} {end} {country} {data} {cData} {highlightColor} {index} />
 		{/await}
 	{/await}

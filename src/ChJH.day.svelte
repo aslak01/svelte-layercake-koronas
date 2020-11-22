@@ -1,16 +1,9 @@
 <script>
-
 	import { LayerCake, ScaledSvg, Html, uniques } from 'layercake';
 	import { scaleBand } from 'd3-scale';
-	
+	import MiniJHday from './MiniJHday.svelte';
 
-	import Select from 'svelte-select'
-
-	import { countries as items } from './utils/searchcountries.js'
 	export let mainSelection;
-
-	let selectedValue = [mainSelection, {label: "Sverige", value: "swe"}, {label: "Russland", value: "rus"}, {label: "Frankrike", value: "fra"}, {label: "USA", value: "usa"}, {label: "Iran", value: "irn"}];
-
 	export let highlightColor;	
 	
 	import Column from './components/Column.svelte'
@@ -20,7 +13,6 @@
 	import AxisY from './components/AxisY.html.svelte';
 	import SharedTooltip from './components/SharedTooltip.percent-range.svelte';
 	
-	import Minidays from './components/Minidays.svelte';
 		
 	let options = { day: 'numeric', month: 'numeric', year: '2-digit' }
 	const formatTickX = d => new Date(d).toLocaleDateString('no-NO', options);
@@ -118,21 +110,7 @@
 		{ label: "Dager", value: 2 },
 		{ label: "Glidende gjennomsnitt", value: 1 }
 	]
-	let skalaSelect = [
-		{ label: "Individuell absolutt skala", value: 1 },
-		{ label: "Delt absolutt skala", value: 2 },
-		{ label: "Delt relativ skala (per million)", value: 3 },
-	]
 	
-	let maximum = [];
-	let pMmax = []
-	let sharedMax
-	let pMsharedMax
-	$: sharedMax = maximum[0] != undefined ? Math.max.apply(Math, maximum) : undefined
-	$: pMsharedMax = pMmax[0] != undefined ? Math.max.apply(Math, pMmax) : undefined
-	let sharedScale = false;
-	let pMsharedScale = false;
-	let skala = 1
 	
 </script>
 <article class="text">
@@ -344,42 +322,9 @@
 	</div>
 
 	</article>
-
 </section>
-<article class="text">
-	<h2 style="margin:0;padding:0;">Sammenlignet med andre land</h2>
-	{#if selectedValue}
-		<p><span>Tallet under landets navn er tilfeller per million innbyggere i den siste perioden glidende gjennomsnitt (definert ovenfor).</span></p>
-		<label for="skala">Skala: 
-			<select id="skala" bind:value={skala}>
-				{#each skalaSelect as {label, value}}
-					<option value={value}>{label}</option>
-				{/each}
-			</select>
-		</label>
-	{/if}
-</article>
 
-{#if selectedValue}
-	<section class="minidays">
-	{#each selectedValue as country, i}
-		<Minidays {range} {start} {end} country={country.value} {highlightColor} bind:maximum={maximum[i]} bind:pMmax={pMmax[i]} {pMsharedMax} {sharedMax} {skala} />
-	{/each}
-	</section>
-{/if}
-
-<article class="text" style="padding-top:1.5rem">
-	<p><span>Legg til eller fjern land, du kan søke etter land på norsk, engelsk, tysk og fransk.</span></p>
-	<div class="themed">
-		<Select
-			{items}
-			bind:selectedValue
-			isMulti={true}
-			listPlacement='bottom'
-		></Select>
-	</div>
-</article>
-
+	<MiniJHday {start} {end} {range} {highlightColor} {mainSelection} />
 
 <style lang="scss">
 	.chart {
@@ -389,16 +334,6 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-	}
-	.minidays {
-		display: flex;
-		/* align-items: center; */
-		height: 100%;
-		width: 100%;
-		flex-flow: row wrap;
-		flex-wrap: wrap;
-		justify-items: space-evenly safe;
-		padding: 1rem 0;
 	}
 	.controls .radios {
 		margin-top: 1rem;
@@ -413,16 +348,6 @@
 		display: block;
 	}
 }
-	label {
-		font-size: .8rem;
-	}
-	.themed {
-		--itemColor: #333;
-		--itemIsActiveColor: #333;
-		color: #333;
-		--inputColor: white;
-		--background: transparent;
-	}
 	.gjennomsnitter {
 		display: inline-block;
 		width: 45%;

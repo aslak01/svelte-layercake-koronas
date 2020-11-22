@@ -1,6 +1,7 @@
 <script>
 	// MINIDAYS
-
+	import { onMount, onDestroy } from 'svelte';
+	import { minidayStore, minidaySettings } from './store.js';
 	import { LayerCake, ScaledSvg, uniques } from 'layercake';
 	import { scaleBand } from 'd3-scale';
 	
@@ -15,13 +16,9 @@
 	export let start = 0;
 	export let end = 1;
 	export let highlightColor;
-	
-	export let maximum
-	export let sharedMax
-	export let pMsharedMax
-	export let skala = 1
-	export let pMmax
-	
+	export let index;
+	// console.log(index)
+		
 	let max
 	let shavedData
 	let currAvgIndex
@@ -86,32 +83,29 @@
 	$: currAvg = currAvgIndex > 0 ? shavedData[currAvgIndex][yKey] : false
 	
 	$: max = Math.max.apply(Math, shavedData.map(d => d[yKey]))
-	$: maximum = max
 	
 	$: pMmax = Math.max.apply(Math, shavedData.map(d => d[pMilKey]))
 	
-
-	
 	$: mvUniqueDates = uniques(shavedData, xKey)
 
-	
-	
+	onMount( () => {
+		$minidayStore = [...$minidayStore, {id: country, aMax: max, pMmax: pMmax}]
+	})
+	onDestroy( () => {
+		console.log('Fjerna ', country)
+		$minidayStore = $minidayStore.filter((n) => {return n.id != country})
+	})
 	
 </script>
 
 	<article class="enhet">
-		{#await data}...
-		{:then data}
-			{#await cData}...
-			{:then cData}
 			<div class="text">
 				<h3 class="name">{cData.nativeName}</h3>
 				<span class="insidens">{insidens(currAvg, population)}</span>
 			</div>
-			{/await}
 			<div class="chart">
 				<div class="chart-container">
-					{#if skala == 1}
+					{#if $minidaySettings.skala == 1}
 					<LayerCake
 					percentRange={true}
 					x='date'
@@ -131,13 +125,13 @@
 					/>
 				</ScaledSvg>
 				</LayerCake>
-				{:else if skala == 2}
+				{:else if $minidaySettings.skala == 2}
 				<LayerCake
 				percentRange={true}
 				x={xKey}
 				y={yKey}
 				data={shavedData}
-				yDomain={[0, sharedMax]}
+				yDomain={[0, $minidaySettings.aMax]}
 				xDomain={mvUniqueDates}
 				xScale={scaleBand()}
 			>
@@ -157,7 +151,7 @@
 					x={xKey}
 					y={pMilKey}
 					data={shavedData}
-					yDomain={[0, pMsharedMax]}
+					yDomain={[0, $minidaySettings.pMax]}
 					xDomain={mvUniqueDates}
 					xScale={scaleBand()}
 				>
@@ -176,7 +170,6 @@
 
 				</div>
 			</div>
-		{/await}
 	</article>
 
 <style>
