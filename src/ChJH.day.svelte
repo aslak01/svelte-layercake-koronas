@@ -2,6 +2,8 @@
 	import { LayerCake, ScaledSvg, Html, uniques } from 'layercake';
 	import { scaleBand } from 'd3-scale';
 	import MiniJHday from './MiniJHday.svelte';
+	
+	import { computeMovingAverage, cutData } from './utils/functions.js'
 
 	export let mainSelection;
 	export let highlightColor;	
@@ -27,36 +29,10 @@
 	
 	export let data
 	
-	// moving average:
-	// https://stackoverflow.com/questions/60211628/moving-average-of-time-series-objects-in-array	
 	
-	const sortDates = (data) => data.sort((a, b) => new Date(a.date) - new Date (b.date));
-	const getAverage = (data) => data.reduce((acc, val) => acc + val.new, 0) / data.length;
-	
-	const computeMovingAverage = (data, period) => {
-		const movingAverages = [];
-		const sortedData = sortDates(data);
-
-		if (period > sortedData.length) { return getAverage(data); }
-		for (let x = 0; x + period - 1 < sortedData.length; x += 1) {
-			if (period > 1) {
-				movingAverages.push({
-					avg: Math.round(getAverage(sortedData.slice(x, x + period))),
-					date: sortedData.slice(x, x + period)[Math.round(period/2)].date	// Middle
-					// date: sortedData.slice(x, x + period)[period-1].date						// End
-				})
-			} else {
-				movingAverages.push({
-					avg: getAverage(sortedData.slice(x, x + period)),	
-					date: sortedData.slice(x, x + period)[0].date	
-				})
-			}
-		}
-		return movingAverages;
-	}
 	let range = 7;
 	let MovingAverage;
-	$: MovingAverage = computeMovingAverage(data.data.new, range);
+	$: MovingAverage = computeMovingAverage(data.data.new, range, 'date', 'new');
 
 	// merge avgs back into data
 	// https://stackoverflow.com/questions/46849286/merge-two-array-of-objects-based-on-a-key-
@@ -69,22 +45,10 @@
 	$: dataToShave = mergeByDate(data.data.new, MovingAverage)
 		
 	
-	// Data cutter
 	let starter = ((data.data.new.findIndex(n => n.new >0))/data.data.new.length) // dynamic right before epidemic start
 	let start = starter;
 	let end = 1;
 	
-	let cutData = (data, x, y) => {
-		let firstSlice = Math.round(start * data.length)
-		let lastSlice = Math.round(end* data.length)
-		if (lastSlice-firstSlice>=2) {
-			return data.slice(firstSlice, lastSlice)
-		} else if (lastSlice < 2) {
-			return data.slice(firstSlice, lastSlice+2)
-		} else if (firstSlice-data.length < 1) {
-			return data.slice(firstSlice-2, lastSlice)
-		}
-	}
 	let shavedData
 	$: shavedData = cutData(dataToShave, start, end)
 	$: shavedMvAvg = cutData(MovingAverage, start, end)

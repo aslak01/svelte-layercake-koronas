@@ -5,6 +5,9 @@
 	import { LayerCake, ScaledSvg, uniques } from 'layercake';
 	import { scaleBand } from 'd3-scale';
 	
+	import { computeMovingAverage, cutData } from './utils/functions.js'
+
+	
 	import Line from './components/Line.svelte';
 	import Area from './components/Area.svelte';	
 	
@@ -31,44 +34,7 @@
 
 	const strokeWidth = 1
 	const stroke = highlightColor;
-	
-	const sortDates = (data) => data.sort((a, b) => new Date(a[xKey]) - new Date (b[xKey]));
-	const getAverage = (data) => data.reduce((acc, val) => acc + val[avgKey], 0) / data.length;
-	
-	const computeMovingAverage = (data, period) => {
-		const movingAverages = [];
-		const sortedData = sortDates(data);
-
-		if (period > sortedData.length) { return getAverage(data); }
-		for (let x = 0; x + period - 1 < sortedData.length; x += 1) {
-			if (period > 1) {
-				movingAverages.push({
-					avg: Math.round(getAverage(sortedData.slice(x, x + period))),
-					date: sortedData.slice(x, x + period)[Math.round(period/2)][xKey],
-					pmil: insidens(getAverage(sortedData.slice(x, x + period)), population)
-				})
-			} else {
-				movingAverages.push({
-					avg: getAverage(sortedData.slice(x, x + period)),	
-					date: sortedData.slice(x, x + period)[0][xKey],
-					pmil: insidens(getAverage(sortedData.slice(x, x + period)), population)
-				})
-			}
-		}
-		return movingAverages;
-	}
 		
-	const cutData = (data) => {
-		let firstSlice = Math.round(start * data.length)
-		let lastSlice = Math.round(end* data.length)
-		if (lastSlice-firstSlice>=2) {
-			return data.slice(firstSlice, lastSlice)
-		} else if (lastSlice < 2) {
-			return data.slice(firstSlice, lastSlice+2)
-		} else if (firstSlice-data.length < 1) {
-			return data.slice(firstSlice-2, lastSlice)
-		}
-	}
 	
 	const insidens = function (avg, pop) {
 		return Number.parseFloat(((avg / pop)).toPrecision(3)*1000000).toFixed()
@@ -77,7 +43,7 @@
 	let population
 	$: population = cData.population
 	
-	$: MovingAverage = computeMovingAverage(data.data.new, range);
+	$: MovingAverage = computeMovingAverage(data.data.new, range, xKey, avgKey);
 	$: shavedData = cutData(MovingAverage, start, end)
 	$: currAvgIndex = shavedData.map(d => d[yKey] !== undefined).lastIndexOf(true)
 	$: currAvg = currAvgIndex > 0 ? shavedData[currAvgIndex][yKey] : false
