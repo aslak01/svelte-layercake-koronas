@@ -43,7 +43,7 @@
 	let population
 	$: population = cData.population
 	
-	$: MovingAverage = computeMovingAverage(data.data.new, range, xKey, avgKey);
+	$: MovingAverage = computeMovingAverage(data.data.new, range, xKey, avgKey, yKey);
 	$: shavedData = cutData(MovingAverage, start, end)
 	$: currAvgIndex = shavedData.map(d => d[yKey] !== undefined).lastIndexOf(true)
 	$: currAvg = currAvgIndex > 0 ? shavedData[currAvgIndex][yKey] : false

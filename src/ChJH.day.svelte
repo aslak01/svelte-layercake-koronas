@@ -2,7 +2,8 @@
 	import { uniques } from 'layercake';
 	import LineBarDay from './components/LineBarDay.svelte'
 	import MiniJHday from './MiniJHday.svelte';
-	
+	import LineBrush from './components/LineBrush.svelte'
+
 	import { computeMovingAverage, cutData } from './utils/functions.js'
 
 	export let mainSelection;
@@ -18,8 +19,9 @@
 	
 	let range = 7;
 	let MovingAverage;
-	$: MovingAverage = computeMovingAverage(data.data.new, range, 'date', 'new');
-
+	$: MovingAverage = computeMovingAverage(data.data.new, range, 'date', 'new', 'avg');
+	// $: console.log(MovingAverage)
+	
 	// merge avgs back into data
 	// https://stackoverflow.com/questions/46849286/merge-two-array-of-objects-based-on-a-key-
 	const mergeByDate = (a1, a2) =>
@@ -53,7 +55,6 @@
 	
 	$: currAvg = currAvgIndex > 0 ? shavedData[currAvgIndex].avg : false
 
-	import LineBrush from './components/LineBrush.svelte'
 
 	let modeSelect = [
 		{ label: "Begge", value: 3 },

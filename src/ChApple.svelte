@@ -8,13 +8,17 @@
 	import { LayerCake, ScaledSvg, Html, uniques } from 'layercake';
 	import { scaleOrdinal } from 'd3-scale';
 	
-	// import { computeMovingAverage, cutData } from './utils/functions.js'
+	import { computeMovingAverage, cutData } from './utils/functions.js'
 
 	import MultiLine from './components/MultiLine.svelte';
 	import AxisX from './components/AxisX.html.svelte';
 	import AxisY from './components/AxisY.html.svelte';
 	import SharedTooltip from './components/SharedTooltip.percent-range.svelte';
 	
+	import LineBrush from './components/LineBrush.svelte'
+	let start = 0;
+	let end = 1;
+
 	
 	export let data
 
@@ -24,41 +28,10 @@
 		delete e["geo_type"];
 	});
 	
+	
 	let data2 = data.data;
+	let range = 7;
 
-	const sortDates = (data) => data.sort((a, b) => new Date(a.date) - new Date (b.date));
-	const getAvgTrans = (data) => data.reduce((acc, val) => acc + val.transit, 0) / data.length;
-	const getAvgDriv = (data) => data.reduce((acc, val) => acc + val.driving, 0) / data.length;
-	const getAvgWalk = (data) => data.reduce((acc, val) => acc + val.walking, 0) / data.length;
-
-
-	const movingAvgTooltip = (data, period) => {
-		const movingAverages = [];
-		const sortedData = sortDates(data);
-
-		if (period > sortedData.length) { return getAverage(data); }
-		for (let x = 0; x + period - 1 < sortedData.length; x += 1) {
-			if (period > 1) {
-				movingAverages.push({
-					transit: Math.round(getAvgTrans(sortedData.slice(x, x + period))),
-					driving: Math.round(getAvgDriv(sortedData.slice(x, x + period))),
-					walking: Math.round(getAvgWalk(sortedData.slice(x, x + period))),
-					date: sortedData.slice(x, x + period)[Math.round(period/2)].date	// Middle
-					// date: sortedData.slice(x, x + period)[period-1].date						// End
-				})
-			} else {
-				movingAverages.push({
-					transit: Math.round(getAvgTrans(sortedData.slice(x, x + period))),
-					driving: Math.round(getAvgDriv(sortedData.slice(x, x + period))),
-					walking: Math.round(getAvgWalk(sortedData.slice(x, x + period))),
-					date: sortedData.slice(x, x + period)[0].date	
-				})
-			}
-		}
-		return movingAverages;
-	}
-	
-	
 	const xKey = 'date';
 	const yKey = 'value';
 	const zKey = 'key';
@@ -69,8 +42,10 @@
 
 	const seriesNames = Object.keys(data2[0]).filter(d => d !== xKey);
 	
+	$: MovingAverage = computeMovingAverage(data2, range, xKey, seriesNames);
+
 	
-	$: seriesColors = ['#2b8dcf', '#fa6eb8', "#ffa600"]
+	let seriesColors = ['#2b8dcf', '#fa6eb8', "#ffa600"]
 	
 	const brightColors = ['#2b8dcf', '#fa6eb8', "#ffa600"]
 	const mutedColors = ['#63344d', '#1a3248', '#443014']
@@ -83,9 +58,24 @@
 	const mutedBus = ['#2b8dcf','#1a3248', "#ffa600"]
 	const mutedPed = ['#2b8dcf', '#fa6eb8', '#443014']
 	
-	// const parseDate = timeParse('%Y-%m-%d');
+	let shavedMvAvg
+	$: shavedMvAvg = cutData(MovingAverage, start, end)
 	
-	const dataLong = seriesNames.map(key => {
+	$: dataLong = seriesNames.map(key => {
+		return {
+			key,
+			values: shavedMvAvg.map(d => {
+				d[xKey] = typeof d[xKey] === 'string' ? new Date(d[xKey]) : d[xKey]; // Conditional required for sapper
+				return {
+					key,
+					[yKey]: +d[key],
+					[xKey]: d[xKey]
+				};
+			})
+		};
+	});
+	
+	let brushDataLong = seriesNames.map(key => {
 		return {
 			key,
 			values: data2.map(d => {
@@ -106,53 +96,16 @@
 	const formatTickY = d => new Intl.NumberFormat("no-NO").format(d);
 	const formatTickX = d => new Date(d).toLocaleDateString('no-NO', {day: '2-digit', month: '2-digit', year: '2-digit'});
 
-	// moving average:
-	// https://stackoverflow.com/questions/60211628/moving-average-of-time-series-objects-in-array
+	
 
-	const getAverage = (data) => data.reduce((acc, val) => acc + val.value, 0) / data.length;
-	
-	const computeMovingAverage = (data, period) => {
-		const avgsArr = [];
-			data.forEach(function (obj){
-				const movingAverages = [];
-				const sortedData = sortDates(obj.values);
 
-				if (period > sortedData.length) { return getAverage(data); }
-				
-				for (let x = 0; x + period - 1 < sortedData.length; x += 1) {
-					if (period > 1) {
-						
-						movingAverages.push({
-							key: sortedData[0].key,
-							value: Math.round(getAverage(sortedData.slice(x, x + period))),
-							date: sortedData.slice(x, x + period)[Math.round(period/2)].date
-						})
-					} else {
-						movingAverages.push({
-							key: sortedData[0].key,
-							value: getAverage(sortedData.slice(x, x + period)),	
-							date: sortedData.slice(x, x + period)[0].date	
-						})
-					}
-				}
-			avgsArr.push({
-				"key": obj.key,
-				"values": movingAverages
-			})
-		})
-		return avgsArr;
-	}
+
+
+
+	$: mvAvgDtEnd = dataLong[0].values[dataLong[0].values.length-1].date.toLocaleDateString('no-NO')
+	$: mvAvgDtStart = dataLong[0].values[0].date.toLocaleDateString('no-NO')
+	$: mvUniqueDates = uniques(dataLong[0].values, "date")
 	
-	console.log("dataLong", dataLong)
-	
-	let range = 7;
-	let MovingAverage;
-	$: MovingAverage = computeMovingAverage(dataLong, range);
-	$: mvAvgDtEnd = MovingAverage[0].values[MovingAverage[0].values.length-1].date.toLocaleDateString('no-NO')
-	$: mvAvgDtStart = MovingAverage[0].values[0].date.toLocaleDateString('no-NO')
-	$: mvUniqueDates = uniques(MovingAverage[0].values, "date")
-	
-	$: MovingAverageTooltip = movingAvgTooltip(data2, range);
 	
 
 	let highlightExists = false
@@ -214,9 +167,9 @@
 				zScale={scaleOrdinal()}
 				zDomain={seriesNames}
 				zRange={seriesColors}
-				flatData={flatten(MovingAverage)}
+				flatData={flatten(dataLong)}
 				yDomain={[null, null]}
-				data={MovingAverage}
+				data={dataLong}
 			>
 				<ScaledSvg>
 
@@ -246,13 +199,21 @@
 				<Html>
 					<SharedTooltip
 						formatTitle={formatTickX}
-						dataset={MovingAverageTooltip}
+						dataset={shavedMvAvg}
 					/>
 				</Html>
 			</LayerCake>
 		</div>
 	</article>	
 	<article class="controls">
+		<LineBrush 
+			bind:min={start}
+			bind:max={end}
+			data={data2}
+			x={xKey}
+			y={'driving'}
+			yDomain={[null, null]}
+		/>
 		<div class="gjennomsnitter">
 			<label>Endre periode for glidende gjennomsnitt:<input type="range" min="1" max="60" bind:value={range} /></label>
 		</div>

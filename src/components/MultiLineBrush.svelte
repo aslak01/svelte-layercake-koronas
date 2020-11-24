@@ -1,12 +1,19 @@
 <script>
 	import { LayerCake, ScaledSvg } from 'layercake';
-	import Line from './Line.svelte';
-	import Area from './Area.svelte';
+	import MultiLine from './MultiLine.svelte';
+	import { scaleOrdinal } from 'd3-scale';
 	
 	export let x;
 	export let y;
 	export let data;
-	export let yDomain = [null, null]
+	export let z;
+	export let zDomain
+	export let zRange;
+	export let flatData;
+	export let yDomain;
+	
+	console.log(x, y, z, data, zDomain, zRange, flatData, yDomain)
+	
 	export let stroke = 'ghostwhite'
 	export let strokeWidth = 1
 	export let areaOpacity = .5
@@ -101,19 +108,15 @@
 			percentRange={true}
 			{x} 
 			{y}
+			{z}
 			{data}
+			zScale={scaleOrdinal()}
+			{zRange}
 			{yDomain}
 			>
-		<ScaledSvg>
-			<Line
-				{strokeWidth}
-				{stroke}
-			/>
-			<Area 
-				opacity={areaOpacity}
-				fill={stroke}
-			/>
-		</ScaledSvg>
+				<ScaledSvg>
+					<MultiLine />
+				</ScaledSvg>
 		</LayerCake>
 	</div>
 	<div class="brush-inner" 

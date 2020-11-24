@@ -1,27 +1,22 @@
-// moving average:
-// https://stackoverflow.com/questions/60211628/moving-average-of-time-series-objects-in-array	
-
-export function computeMovingAverage(data, period, datekey, valuekey) {
-	const sortDates = (data, datekey) => data.sort((a, b) => new Date(a[datekey]) - new Date (b[datekey]));
-	const getAverage = (data, valuekey) => data.reduce((acc, val) => acc + val[valuekey], 0) / data.length;
-	
+// https://stackoverflow.com/questions/60211628/moving-average-of-time-series-objects-in-array
+export function computeMovingAverage(data, period, datekey, valuekey, avgkey) {
 	const movingAverages = [];
-	const sortedData = sortDates(data, 'date');
-
-	if (period > sortedData.length) { return getAverage(data, valuekey); }
+	
+	const sortDates = (data) => data.sort((a, b) => new Date(a[datekey]) - new Date (b[datekey]));
+	const sortedData = sortDates(data);
+	
+	const getAverage = (data, valuekey) => data.reduce((acc, val) => acc + val[valuekey], 0) / data.length;
 	for (let x = 0; x + period - 1 < sortedData.length; x += 1) {
-		if (period > 1) {
-			movingAverages.push({
-				avg: Math.round(getAverage(sortedData.slice(x, x + period), valuekey)),
-				date: sortedData.slice(x, x + period)[Math.round(period/2)][datekey]	// Middle
-				// date: sortedData.slice(x, x + period)[period-1].date						// End
-			})
-		} else {
-			movingAverages.push({
-				avg: getAverage(sortedData.slice(x, x + period), valuekey),	
-				date: sortedData.slice(x, x + period)[0][datekey]
-			})
+		let row = {}
+		if (Array.isArray(valuekey)) {
+			for (let i = 0; i < valuekey.length; i += 1) {
+				row[valuekey[i]] = Math.round( getAverage( sortedData.slice(x, x + period), valuekey[i]) )
+			}
+		} else { 
+			row[avgkey] = Math.round( getAverage( sortedData.slice(x, x + period), valuekey) )	
 		}
+		row[datekey] = (period > 1) ? sortedData.slice(x, x + period)[Math.round(period/2)][datekey] : sortedData.slice(x, x + period)[0][datekey]			
+		movingAverages.push(row)
 	}
 	return movingAverages;
 }

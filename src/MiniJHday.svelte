@@ -39,10 +39,7 @@
 		selectedValue.push(mainSelection, {label: "Sverige", value: "swe"}, {label: "Russland", value: "rus"}, {label: "Frankrike", value: "fra"}, {label: "USA", value: "usa"}, {label: "Iran", value: "irn"})
 	})
 	
-	function handleSelection(event) {
-		console.log('selection:', event.detail)
-		console.log('#each array', selectedValue)
-	}
+	
 	const uniqByProp_map = prop => arr =>
 	Array.from(
 		arr
@@ -68,7 +65,7 @@
 	// return !duplicate;
 	// }).slice()
 	
-	$: console.log("sorted", sorted)
+	// $: console.log("sorted", sorted)
 </script>
 
 
