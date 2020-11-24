@@ -1,4 +1,19 @@
 <script>
+	import { LayerCake, Svg } from 'layercake';
+	import Line from './Line.svelte';
+	import Area from './Area.svelte';
+	
+	export let x;
+	export let y;
+	export let data;
+	export let stroke = 'ghostwhite'
+	export let strokeWidth = 1
+	export let areaOpacity = .5
+	export let brushBg = '#1a1f29'
+	export let brushColor = 'ghostwhite'
+	export let brushBlendMode = 'difference'
+	export let brushHeight = '2rem'
+
 	import { clamp } from 'yootils';
 	
 	export let min;
@@ -76,21 +91,9 @@
 	$: left = 100 * min;
 	$: right = 100 * (1 - max);
 	
-	import { LayerCake, Svg } from 'layercake';
-	import Line from './Line.svelte';
-	import Area from './Area.svelte';
-
-	export let x;
-	export let y;
-	export let data;
-	
-	export let highlightColor;
-	
-
-	
 </script>
 
-<div bind:this={brush} class="brush-outer" on:mousedown={reset}>
+<div bind:this={brush} class="brush-outer" on:mousedown={reset} style="background: {brushBg}; height: {brushHeight}">
 	{#if min !== null}
 	<div class="chart-container">
 		<LayerCake
@@ -98,61 +101,49 @@
 			>
 		<Svg>
 			<Line
-				strokeWidth=1
-				stroke='ghostwhite'
+				{strokeWidth}
+				{stroke}
 			/>
 			<Area 
-				opacity='.5'
-				fill='ghostwhite'
+				opacity={areaOpacity}
+				fill={stroke}
 			/>
 		</Svg>
 		</LayerCake>
 	</div>
-	<div class="brush-inner" on:mousedown|stopPropagation={move} on:touchstart|stopPropagation={move} style="left: {left}%; right: {right}%;"></div>
+	<div class="brush-inner" 
+		on:mousedown|stopPropagation={move} 
+		on:touchstart|stopPropagation={move} 
+		style="left: {left}%; right: {right}%; background: {brushColor}; mix-blend-mode: {brushBlendMode}">
+	</div>
 	<div class="brush-handle" on:mousedown|stopPropagation={adjust_min} on:touchstart|stopPropagation={adjust_min} style="left: {left}%;"></div>
 	<div class="brush-handle" on:mousedown|stopPropagation={adjust_max} on:touchstart|stopPropagation={adjust_max} style="right: {right}%;"></div>
 	{/if}
 </div>
 
 <style>
-
-.chart-container {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-}
-
-
-
+	.chart-container {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
 	.brush-outer {
 		position: relative;
 		width: 100%;
-		height: 2em;
 		margin: 0 0 1em 0;
-		/* border: 1px solid #333; */
 		overflow: hidden;
-		/* background: black; */
-		background: #1a1f29;
 	}
-	
 	.brush-inner {
 		position: absolute;
 		height: 100%;
 		cursor: move;
-		/* background: #ffffff30; */
-		/* background: gainsboro; */
-		/* background: #12141b; */
-		background: ghostwhite;
-		mix-blend-mode: difference;
 }
-	
 	.brush-handle {
 		position: absolute;
 		width: 15px;
 		height: 100%;
 		cursor: ew-resize;
 	}
-	
 	/* .brush-handle::before {
 		position: absolute;
 		content: '';
@@ -161,6 +152,5 @@
 		background: white;
 		border-left: 2px solid tomato;
 		border-right: 2px solid tomato;
-		
 	} */
 </style>

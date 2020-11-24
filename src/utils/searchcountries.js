@@ -13,7 +13,7 @@ function concatAndDeDuplicateObjects(p, ...arrs) {
       (a, b) => (!a.filter((c) => b[p] === c[p]).length ? [...a, b] : a),
       []
     );
-}
+} 
 
 let unfiltered = concatAndDeDuplicateObjects("name", no, de, fr, en);
 

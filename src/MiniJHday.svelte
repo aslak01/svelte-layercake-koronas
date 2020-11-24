@@ -2,6 +2,8 @@
 	import { onMount } from 'svelte';
 	import { minidayStore, minidaySettings, minidayCopy} from './store.js';
 	import Minidays from './components/Minidays.svelte';
+	
+	import CountryMultiselect from './components/CountryMultiselect.svelte'
 
 	import Select from 'svelte-select'
 	import { countries as items } from './utils/searchcountries.js'
