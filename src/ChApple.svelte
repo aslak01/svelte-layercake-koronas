@@ -7,6 +7,8 @@
 	
 	import { LayerCake, ScaledSvg, Html, uniques } from 'layercake';
 	import { scaleOrdinal } from 'd3-scale';
+	
+	// import { computeMovingAverage, cutData } from './utils/functions.js'
 
 	import MultiLine from './components/MultiLine.svelte';
 	import AxisX from './components/AxisX.html.svelte';
@@ -140,6 +142,9 @@
 		})
 		return avgsArr;
 	}
+	
+	console.log("dataLong", dataLong)
+	
 	let range = 7;
 	let MovingAverage;
 	$: MovingAverage = computeMovingAverage(dataLong, range);
