@@ -175,14 +175,14 @@
 <style>
 	.enhet {
 		position: relative;
-		width: 135px;
+		width: 140px;
 		height: 100px;
 		margin: auto;
 		justify-content: center;
 	}
 	.chart {
 		position: relative;
-		width: 100px;
+		width: 90px;
 		height: 60px;
 		padding-top: 0;
 		z-index: 10;

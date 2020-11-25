@@ -8,7 +8,7 @@
 	import CountryMultiselect from './components/CountryMultiselect.svelte'
 
 	import Select from 'svelte-select'
-	import { countries as items } from './utils/searchcountries.js'
+	import { countries as items, regions } from './utils/searchcountries.js'
 	
 	export let mainSelection;
 
@@ -18,6 +18,8 @@
 	export let range = 7;
 	export let start = 0;
 	export let end = 1;
+	
+	let subregions = false;
 
 	let skala = 3
 	const skalaSelect = [
@@ -59,23 +61,24 @@
 	const uniqueById = uniqByProp_map("id");
 	
 	
-	let isSorted = false;
-	let sorted
-	// let seen = new Set();
-	// $: sorted = uniqueById($minidayCopy).sort((a, b) => (b?.pMmax || 0) - (a?.pMmax || 0))
-	// filter(el => {
-	// const duplicate = seen.has(el.id);
-	// seen.add(el.id);
-	// return !duplicate;
-	// }).slice()
-	
-	// $: console.log("sorted", sorted)
+	const selectRegion = function (region, sub) {
+		let result = regions.data.filter(obj => {
+			if (sub) {
+				return obj.subregion === region
+			}
+			return obj.region === region
+		})
+		selectedValue = []
+		selectedValue = result
+	}
+
+
 </script>
 
 
 
 <article class="text">
-	<h2 style="margin:0;padding:0;">Sammenlignet med andre land</h2>
+	<h2 style="margin:0;padding:0;">Sammenlign land</h2>
 	{#if selectedValue}
 		<p><span>Definer tidsramme og periode for glidende gjennomsnitt med kontrollene over.</span></p>
 		<label for="skala">Skala: 
@@ -85,6 +88,24 @@
 				{/each}
 			</select>
 		</label>
+		<div class="selectregions">
+			Velg en region:
+			{#each regions.meta.regions as region} 
+			<a on:click={() => selectRegion(region)}>{region}</a>
+			{/each}
+			eller legg til/fjern land selv i boksen under grafene. <br>
+			{#if !subregions}
+			<a on:click={() => subregions = !subregions }>Vis subregioner</a>
+		{/if}
+		{#if subregions}
+		Velg en sub-region:
+			{#each regions.meta.subregions as region} 
+				<a on:click={() => selectRegion(region, true)}>{region}</a>
+			{/each}
+			<a on:click={() => subregions = !subregions }>X</a>
+		{/if}
+		</div>
+
 		<!-- broken: -->		
 		<!-- <label>Sortert: <input type="checkbox" bind:checked={isSorted}></label> -->
 	{/if}
@@ -96,15 +117,6 @@
 			<Minidays {range} {start} {end} country={country.value} {highlightColor} {index} />
 		{/each}
 	</section>
-{/if}
-
-
-{#if isSorted}
-<section class="minidays">
-{#each sorted as country, index (country.pMmax)}
-<Minidays {range} {start} {end} country={country.id} {highlightColor} {index} />
-{/each}
-</section>
 {/if}
 
 <!-- debug buttons -->
@@ -120,6 +132,9 @@
 			isMulti={true}
 			listPlacement='bottom'
 		></Select>
+	</div>
+	<div class="selectregions">
+
 	</div>
 </article>
 
@@ -145,5 +160,28 @@
 	padding: 1rem 0;
 }
 
+.selectregions {
+	font-size: .8rem;
+	margin-top: .5rem;
+}
+
+a {
+	margin-right: .3rem;
+	margin-bottom: .3rem;
+	display: inline-block;
+	padding: .3rem;
+	cursor: pointer;
+	background: #333;
+	color: ghostwhite;
+	border-radius: 3px;
+}
+a:hover {
+	background: #ffa600;
+	text-decoration: none;
+}
+a.active {
+	background: ghostwhite;
+	color: black;
+}
 	
 </style>

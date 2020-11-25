@@ -30,13 +30,14 @@
     class="label"
     style="
       top:{top * 100 + 8 }%;
-      left:{left * 100 + 15 + (6 * offset)}%;
+      left:{left * 100 + 12 + (8 * offset)}%;
     "
   >{label}</div>
 
 
 <style>
 	.label {
+    text-align: left;
 		position: absolute;
 		transform: translate(-100%, -100%)translateY(1px);
 		font-size: 10px;
