@@ -90,7 +90,7 @@
 	{/await}
 
 
-	<!-- {#await $response}
+	{#await $response}
 	<article class="text">
 		<h2>Totale diagnoser</h2>
 	</article>
@@ -99,7 +99,7 @@
 		</div>
 	{:then data}
 		<ChartsJHtot {data} {highlightColor} />
-	{/await} --> 
+	{/await} 
 
 
 	{#await $response2}
@@ -110,7 +110,7 @@
 		<ChartsApple {data}/>
 	{/await}
 
-	<!-- {#if selectedValue.value === 'nor'}
+	{#if selectedValue.value === 'nor'}
 	{#await $response3}
 	<article class="text">
 		<h2>Sykdom rapportert til MSIS, 2016–2020</h2>
@@ -121,7 +121,7 @@
 	{:then data3}
 		<ChartsFHI koronaVirus={data3.infected} />
 	{/await}
-  {/if} -->
+  {/if}
  
 	 <footer>
 		 <article class="text">

@@ -50,7 +50,16 @@
 	
 	$: max = Math.max.apply(Math, shavedData.map(d => d[yKey]))
 	
-	$: pMmax = Math.max.apply(Math, shavedData.map(d => d[pMilKey]))
+	$: updShv = shavedData.map(v => ({
+		...v, pmil: insidens(v[yKey], population)
+		}))
+	// $: console.log(updShv)
+	
+	$: pMmax = Math.max.apply(Math, shavedData.map(d => insidens(d[yKey], population)))
+	// $: console.log(shavedData.map(d => insidens(d[yKey], population)))
+	// $: pMmax.map(i => shavedData.map(v => ({...v, i}) ))
+	
+	// $: console.log(shavedData)
 	
 	$: mvUniqueDates = uniques(shavedData, xKey)
 
@@ -116,7 +125,7 @@
 					percentRange={true}
 					x={xKey}
 					y={pMilKey}
-					data={shavedData}
+					data={updShv}
 					yDomain={[0, $minidaySettings.pMax]}
 					xDomain={mvUniqueDates}
 					xScale={scaleBand()}
