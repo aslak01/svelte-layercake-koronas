@@ -111,7 +111,7 @@
 			Henter mobilitetsdata.
 		</article>
 	{:then data}
-		<ChartsApple {data}/>
+		<ChartsApple {data} {highlightColor} />
 	{/await}
 
 	{#if selectedValue.value === 'nor'}

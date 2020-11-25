@@ -139,7 +139,7 @@
 				</Html>
 			</LayerCake>
 			{:else}
-				{#if updShv[updShv.length -1].pmil}
+				{#await updShv}...{:then updShv}
 					<LayerCake
 						percentRange={true}
 						x={xKey}
@@ -164,7 +164,7 @@
 							/>
 						</Html>
 					</LayerCake>
-				{/if}
+				{/await}
 			{/if}
 
 

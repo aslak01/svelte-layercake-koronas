@@ -14,6 +14,7 @@
 	export let brushColor = 'ghostwhite'
 	export let brushBlendMode = 'difference'
 	export let brushHeight = '2rem'
+	export let highlightColor
 
 	import { clamp } from 'yootils';
 	

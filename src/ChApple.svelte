@@ -21,6 +21,8 @@
 	let end = 1;
 
 	
+	export let highlightColor
+	
 	export let data
 
 	data.data.forEach((e) => {
@@ -31,6 +33,26 @@
 	
 	
 	let data2 = data.data;
+	// console.log(data2)
+	const seriesNames = Object.keys(data2[0]).filter(d => d !== xKey);
+
+	// import AreaStacked from './components/AreaStacked.svelte';
+// 	import { stack } from 'd3-shape';
+// 	
+// 	const stackData = stack().keys(seriesNames);
+// 	
+// 	let series = stackData(data2)
+// 	console.log(series)
+// 	const yKey = [0, 1];
+// 
+// 	
+// 	data2.forEach(d => {
+// 		d[xKey] = typeof d[xKey] === 'string' ? new Date(d[xKey]) : d[xKey];
+// 		seriesNames.forEach(name => {
+// 			d[name] = +d[name];
+// 		});
+// 	});
+	
 	let range = 7;
 
 	const xKey = 'date';
@@ -41,7 +63,6 @@
 	const yTickColor = "#ccc";
 
 
-	const seriesNames = Object.keys(data2[0]).filter(d => d !== xKey);
 	
 	$: MovingAverage = computeMovingAverage(data2, range, xKey, seriesNames);
 
@@ -173,9 +194,7 @@
 				data={dataLong}
 			>
 				<ScaledSvg>
-
-					<MultiLine
-					/>
+					<MultiLine />
 				</ScaledSvg>
 				<Html>
 					<AxisX
@@ -214,6 +233,7 @@
 			x={xKey}
 			y={'driving'}
 			yDomain={[null, null]}
+			{highlightColor}
 		/>
 		<Gjennomsnitter bind:range />
 	</article>
