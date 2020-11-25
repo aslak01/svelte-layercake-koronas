@@ -13,7 +13,7 @@ export let index;
 
 let req = getData2("https://disease.sh/v3/covid-19/historical/" + country + "?lastdays=all");
 
-let cData = getData('https://restcountries.eu/rest/v2/alpha/' + country);
+let cData = getData('https://restcountries.eu/rest/v2/alpha/' + country + "?fields=population;nativeName");
 
 
 </script>
