@@ -13,6 +13,10 @@
 	// error handling apple chart
 	// organising minidays by insidens
 	// no zoom on iPhone in select form
+	// disable dropdown on countryadd
+	// add region group selection to minichart
+	// la bruker søke på et land som finnes i defaultsene uten at det kræsjer
+	// fikse bugg i at skala i minicharts ikke reflekterer endringer i range
 	
 	
 	import ChartsJHday from './ChJH.day.svelte';
@@ -210,73 +214,6 @@ header {
 	margin: 0 auto;
 		label {
 			font-size: .8rem;
-		}
-		input[type=range] {
-			-webkit-appearance: none;
-			width: 100%;
-			padding: 0;
-			border: 0;
-		}
-		input[type=range]:focus {
-			outline: none;
-		}
-		input[type=range]::-webkit-slider-runnable-track {
-			width: 100%;
-			height: 2px;
-			cursor: pointer;
-			background: black;
-		}
-		input[type=range]::-webkit-slider-thumb {
-			height: 26px;
-			width: 26px;
-			border-radius: 26px;
-			background: white;
-			cursor: pointer;
-			-webkit-appearance: none;
-			margin-top: -10px;
-		}
-		input[type=range]:focus::-webkit-slider-runnable-track {
-			background: black;
-		}
-		input[type=range]::-moz-range-track {
-			width: 100%;
-			height: 2px;
-			cursor: pointer;
-			background: black;
-		}
-		input[type=range]::-moz-range-thumb {
-			height: 26px;
-			width: 26px;
-			border-radius: 26px;
-			background: #ffffff;
-			cursor: pointer;
-		}
-		input[type=range]::-ms-track {
-			width: 100%;
-			height: 2px;
-			cursor: pointer;
-			background: transparent;
-			border-color: transparent;
-			color: transparent;
-		}
-		input[type=range]::-ms-fill-lower {
-			background: black;
-		}
-		input[type=range]::-ms-fill-upper {
-			background: black;
-		}
-		input[type=range]::-ms-thumb {
-			height: 26px;
-			width: 26px;
-			border-radius: 26px;
-			background: white;
-			cursor: pointer;
-		}
-		input[type=range]:focus::-ms-fill-lower {
-			background: black;
-		}
-		input[type=range]:focus::-ms-fill-upper {
-			background: black;
 		}
 	}
 	article.topcontrols {

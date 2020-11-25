@@ -3,6 +3,7 @@
 	import LineBarDay from './components/LineBarDay.svelte'
 	import MiniJHday from './MiniJHday.svelte';
 	import LineBrush from './components/LineBrush.svelte'
+	import Gjennomsnitter from './components/Gjennomsnitter.svelte'
 
 	import { computeMovingAverage, cutData } from './utils/functions.js'
 
@@ -118,9 +119,7 @@
 			{highlightColor}
 		/>
 	
-	<div class="gjennomsnitter">
-		<label>Endre periode for glidende gjennomsnitt:<input type="range" min="1" max="60" bind:value={range} /></label>
-	</div>
+	<Gjennomsnitter bind:range />
 	
 	<div class="radios">
 		<label for="radio">Vis: </label>
@@ -150,13 +149,6 @@
 		display: block;
 	}
 }
-	.gjennomsnitter {
-		display: inline-block;
-		width: 45%;
-		min-width: 200px;
-		max-width: 500px;
-		margin-right: 3rem;
-	}
 	.radios {
 		display: inline-block;
 		width: 45%;

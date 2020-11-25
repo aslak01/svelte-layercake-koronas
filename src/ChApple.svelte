@@ -16,6 +16,7 @@
 	import SharedTooltip from './components/SharedTooltip.percent-range.svelte';
 	
 	import LineBrush from './components/LineBrush.svelte'
+	import Gjennomsnitter from './components/Gjennomsnitter.svelte'
 	let start = 0;
 	let end = 1;
 
@@ -214,9 +215,7 @@
 			y={'driving'}
 			yDomain={[null, null]}
 		/>
-		<div class="gjennomsnitter">
-			<label>Endre periode for glidende gjennomsnitt:<input type="range" min="1" max="60" bind:value={range} /></label>
-		</div>
+		<Gjennomsnitter bind:range />
 	</article>
 
 </section>

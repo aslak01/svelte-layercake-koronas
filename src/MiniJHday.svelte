@@ -17,7 +17,7 @@
 	export let start = 0;
 	export let end = 1;
 
-	let skala = 1
+	let skala = 3
 	const skalaSelect = [
 		{ label: "Individuell absolutt skala", value: 1 },
 		{ label: "Delt absolutt skala", value: 2 },
@@ -36,7 +36,7 @@
 
 
 	onMount(()=>{
-		selectedValue.push(mainSelection, {label: "Sverige", value: "swe"}, {label: "Russland", value: "rus"}, {label: "Frankrike", value: "fra"}, {label: "USA", value: "usa"}, {label: "Iran", value: "irn"})
+		selectedValue.push(mainSelection, {label: "Sverige", value: "swe"}, {label: "Russland", value: "rus"}, {label: "Frankrike", value: "fra"}, {label: "USA", value: "usa"}, {label: "Tyskland", value: "deu"})
 	})
 	
 	
@@ -58,7 +58,7 @@
 	let isSorted = false;
 	let sorted
 	// let seen = new Set();
-	$: sorted = uniqueById($minidayCopy).sort((a, b) => (b?.pMmax || 0) - (a?.pMmax || 0))
+	// $: sorted = uniqueById($minidayCopy).sort((a, b) => (b?.pMmax || 0) - (a?.pMmax || 0))
 	// filter(el => {
 	// const duplicate = seen.has(el.id);
 	// seen.add(el.id);

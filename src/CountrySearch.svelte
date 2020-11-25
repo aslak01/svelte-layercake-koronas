@@ -2,7 +2,7 @@
 	import Select from 'svelte-select'
 	import {countries as items} from './utils/searchcountries.js'
 
-	export let selectedValue = {label: "Norge", value: "nor"};
+	export let selectedValue
 	
 	// $: console.log(selectedValue)
 	

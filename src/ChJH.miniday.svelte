@@ -2,7 +2,7 @@
 	// MINIDAYS
 	import { onMount, onDestroy } from 'svelte';
 	import { minidayStore, minidaySettings } from './store.js';
-	import { LayerCake, ScaledSvg, uniques } from 'layercake';
+	import { LayerCake, ScaledSvg, uniques, Html } from 'layercake';
 	import { scaleBand } from 'd3-scale';
 	
 	import { computeMovingAverage, cutData } from './utils/functions.js'
@@ -10,6 +10,7 @@
 	
 	import Line from './components/Line.svelte';
 	import Area from './components/Area.svelte';	
+	import Label from './components/Label.svelte';	
 	
 	
 	export let data
@@ -51,18 +52,18 @@
 	$: max = Math.max.apply(Math, shavedData.map(d => d[yKey]))
 	
 	$: updShv = shavedData.map(v => ({
-		...v, pmil: insidens(v[yKey], population)
+		...v, pmil: parseInt(insidens(v[yKey], population))
 		}))
-	// $: console.log(updShv)
+	
+	// $: console.log("updShv", updShv)
 	
 	$: pMmax = Math.max.apply(Math, shavedData.map(d => insidens(d[yKey], population)))
-	// $: console.log(shavedData.map(d => insidens(d[yKey], population)))
-	// $: pMmax.map(i => shavedData.map(v => ({...v, i}) ))
 	
-	// $: console.log(shavedData)
 	
 	$: mvUniqueDates = uniques(shavedData, xKey)
 
+	$: currInsidens = insidens(currAvg, population)
+	
 	onMount( () => {
 		$minidayStore = [...$minidayStore, {id: country, aMax: max, pMmax: pMmax}]
 	})
@@ -76,7 +77,7 @@
 	<article class="enhet">
 			<div class="text">
 				<h3 class="name">{cData.nativeName}</h3>
-				<span class="insidens">{insidens(currAvg, population)}</span>
+				<!-- <span class="insidens">{currInsidens}</span> -->
 			</div>
 			<div class="chart">
 				<div class="chart-container">
@@ -90,15 +91,20 @@
 					xDomain={mvUniqueDates}
 					xScale={scaleBand()}
 				>
-				<ScaledSvg>
-					<Line
-						{stroke}
-						{strokeWidth}
-					/>
-					<Area 
-						fill={stroke}
-					/>
-				</ScaledSvg>
+					<ScaledSvg>
+						<Line
+							{stroke}
+							{strokeWidth}
+						/>
+						<Area 
+							fill={stroke}
+						/>
+					</ScaledSvg>
+					<Html>
+						<Label
+							labelValue={currAvg}
+						/>
+					</Html>
 				</LayerCake>
 				{:else if $minidaySettings.skala == 2}
 				<LayerCake
@@ -110,26 +116,6 @@
 				xDomain={mvUniqueDates}
 				xScale={scaleBand()}
 			>
-			<ScaledSvg>
-				<Line
-					{stroke}
-					{strokeWidth}
-				/>
-				<Area 
-					fill={stroke}
-				/>
-			</ScaledSvg>
-			</LayerCake>
-			{:else}
-					<LayerCake
-					percentRange={true}
-					x={xKey}
-					y={pMilKey}
-					data={updShv}
-					yDomain={[0, $minidaySettings.pMax]}
-					xDomain={mvUniqueDates}
-					xScale={scaleBand()}
-				>
 				<ScaledSvg>
 					<Line
 						{stroke}
@@ -139,8 +125,40 @@
 						fill={stroke}
 					/>
 				</ScaledSvg>
-				</LayerCake>
+				<Html>
+					<Label
+						labelValue={currAvg}
+					/>
+				</Html>
+			</LayerCake>
+			{:else}
+				{#if updShv[updShv.length -1].pmil}
+					<LayerCake
+						percentRange={true}
+						x={xKey}
+						y={pMilKey}
+						data={updShv}
+						yDomain={[0, $minidaySettings.pMax]}
+						xDomain={mvUniqueDates}
+						xScale={scaleBand()}
+					>
+						<ScaledSvg>
+							<Line
+								{stroke}
+								{strokeWidth}
+							/>
+							<Area 
+								fill={stroke}
+							/>
+						</ScaledSvg>
+						<Html>
+							<Label
+								labelValue={currInsidens}
+							/>
+						</Html>
+					</LayerCake>
 				{/if}
+			{/if}
 
 
 				</div>
