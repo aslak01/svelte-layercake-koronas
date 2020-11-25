@@ -37,7 +37,7 @@
 	
 	let defaults = [{label: "Norge", value: "nor"}, {label: "Storbritannia", value: "gbr"}, {label: "USA", value: "usa"}, {label: "Tyskland", value: "deu"}, {label: "Frankrike", value: "fra"}]
 	
-	$: console.log(JSON.stringify(uniqueByKeepLast(defaults, it => it.value)))
+	// $: console.log(JSON.stringify(uniqueByKeepLast(defaults, it => it.value)))
 
 	onMount(()=>{
 		selectedValue.push(...defaults)

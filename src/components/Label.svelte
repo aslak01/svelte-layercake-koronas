@@ -13,8 +13,6 @@
   }
   
   $: offset = convert(labelValue)
-  $: console.log(offset)
-  // console.log(convert(labelValue))
 
   const { data, x, y, xScale, yScale, xRange, yRange, xGet, yGet } = getContext('LayerCake');
   /* --------------------------------------------
@@ -22,18 +20,9 @@
 	 */
 	// const cap = val => val.replace(/^\w/, d => d.toUpperCase());
 
-  /* --------------------------------------------
-	 * Put the label on the highest value
-	 */
-  // $: console.log($data)
-  // $: console.log(labelValue, ": ", $xGet($data[$data.length-1]), $yGet($data[$data.length-1]))
-  // $: console.log(labelValue, ": ", $xScale($data[$data.length-1]), $yScale($data[$data.length-1]))
-  // $: console.log($data[$data.length-1])
-  // $: console.log(labelValue, ": ", $data)
   $: left = $xGet($data[$data.length-1]) / 100
-   // /  Math.max(...$xRange);
   $: top = $yGet($data[$data.length-1]) / 100
-   // / Math.max(...$yRange);
+
 </script>
 
 

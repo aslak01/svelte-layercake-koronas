@@ -14,7 +14,7 @@
 				value: o.alpha3Code.toLowerCase()
 			}))
 		} else {
-			throw new Error(users);
+			throw new Error(countries);
 		}
 	}
 	onMount( () => {
