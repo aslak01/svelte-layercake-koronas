@@ -11,8 +11,8 @@
 	// todo:
 	// solid line at 0 in apple chart
 	// error handling apple chart
-	// brush apple chart
 	// organising minidays by insidens
+	// no zoom on iPhone in select form
 	
 	
 	import ChartsJHday from './ChJH.day.svelte';
