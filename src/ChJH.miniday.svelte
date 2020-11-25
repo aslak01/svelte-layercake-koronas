@@ -1,11 +1,12 @@
 <script>
 	// MINIDAYS
 	import { onMount, onDestroy } from 'svelte';
-	import { minidayStore, minidaySettings } from './store.js';
+	import { minidayStore, minidaySettings, minidayCopy } from './store.js';
 	import { LayerCake, ScaledSvg, uniques, Html } from 'layercake';
 	import { scaleBand } from 'd3-scale';
 	
-	import { computeMovingAverage, cutData } from './utils/functions.js'
+	
+	import { computeMovingAverage, cutData, uniqueByKeepLast } from './utils/functions.js'
 
 	
 	import Line from './components/Line.svelte';
@@ -64,8 +65,14 @@
 
 	$: currInsidens = insidens(currAvg, population)
 	
+	let recentData
+	$: recentData = { id: country, aMax: max, pMmax }
+	
+	
+	// $: console.log($minidayCopy)
+	
 	onMount( () => {
-		$minidayStore = [...$minidayStore, {id: country, aMax: max, pMmax: pMmax}]
+		$minidayStore = [...$minidayStore, recentData]
 	})
 	onDestroy( () => {
 		console.log('Fjerna ', country)
@@ -168,7 +175,7 @@
 <style>
 	.enhet {
 		position: relative;
-		width: 100px;
+		width: 135px;
 		height: 100px;
 		margin: auto;
 		justify-content: center;
@@ -179,6 +186,7 @@
 		height: 60px;
 		padding-top: 0;
 		z-index: 10;
+		margin-left: 5px;
 	}
 	.chart-container {
 		position: relative;
@@ -196,6 +204,7 @@
 		font-weight: normal;
 		font-size: clamp(.8rem, 1%, 1.2rem);
 		margin: 0;
+		margin-left: 5px;
 		/* white-space: nowrap; */
 	}
 	.insidens {

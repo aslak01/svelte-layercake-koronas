@@ -2,6 +2,8 @@
 	import { onMount } from 'svelte';
 	import { minidayStore, minidaySettings, minidayCopy} from './store.js';
 	import Minidays from './components/Minidays.svelte';
+	import { uniqueByKeepLast } from './utils/functions.js'
+
 	
 	import CountryMultiselect from './components/CountryMultiselect.svelte'
 
@@ -33,10 +35,12 @@
 	$: $minidaySettings.pMax = pMmax[0] != undefined ? Math.max.apply(Math, pMmax) : undefined
 	$: $minidaySettings.skala = skala
 	
-
+	let defaults = [{label: "Norge", value: "nor"}, {label: "Storbritannia", value: "gbr"}, {label: "USA", value: "usa"}, {label: "Tyskland", value: "deu"}, {label: "Frankrike", value: "fra"}]
+	
+	$: console.log(JSON.stringify(uniqueByKeepLast(defaults, it => it.value)))
 
 	onMount(()=>{
-		selectedValue.push(mainSelection, {label: "Sverige", value: "swe"}, {label: "Russland", value: "rus"}, {label: "Frankrike", value: "fra"}, {label: "USA", value: "usa"}, {label: "Tyskland", value: "deu"})
+		selectedValue.push(...defaults)
 	})
 	
 	
@@ -73,7 +77,7 @@
 <article class="text">
 	<h2 style="margin:0;padding:0;">Sammenlignet med andre land</h2>
 	{#if selectedValue}
-		<p><span>Tallet under landets navn er tilfeller per million innbyggere i den siste perioden glidende gjennomsnitt (definert ovenfor).</span></p>
+		<p><span>Definer tidsramme og periode for glidende gjennomsnitt med kontrollene over.</span></p>
 		<label for="skala">Skala: 
 			<select id="skala" bind:value={skala}>
 				{#each skalaSelect as {label, value}}

@@ -13,6 +13,7 @@
   }
   
   $: offset = convert(labelValue)
+  $: console.log(offset)
   // console.log(convert(labelValue))
 
   const { data, x, y, xScale, yScale, xRange, yRange, xGet, yGet } = getContext('LayerCake');
@@ -39,8 +40,8 @@
 	<div
     class="label"
     style="
-      top:{top * 100 + 7 }%;
-      left:{left * 100 + 10 + (6 * offset)}%;
+      top:{top * 100 + 8 }%;
+      left:{left * 100 + 15 + (6 * offset)}%;
     "
   >{label}</div>
 

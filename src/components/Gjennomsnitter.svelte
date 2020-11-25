@@ -83,7 +83,7 @@
 		width: 100%;
 		height: 2px;
 		cursor: pointer;
-		background: ghostwhite;
+		background: slategray;
 	}
 	input[type=range]::-webkit-slider-thumb {
 		height: 26px;
@@ -95,7 +95,7 @@
 		margin-top: -13px;
 	}
 	input[type=range]:focus::-webkit-slider-runnable-track {
-		background: black;
+		background: slategray;
 	}
 	input[type=range]::-moz-range-track {
 		width: 100%;

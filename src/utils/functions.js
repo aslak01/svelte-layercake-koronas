@@ -33,3 +33,14 @@ export function cutData(data, start, end) {
 		return data.slice(firstSlice-2, lastSlice)
 	}
 }
+
+
+// uniqueByKeepLast(data, itm => itm.key)
+// https://levelup.gitconnected.com/7-ways-to-remove-duplicates-from-array-in-javascript-cea4144caf31
+export function uniqueByKeepLast(data, key) {
+	return [
+		new Map(
+			data.map(x => [key(x), x])
+		).values()
+	]
+}
