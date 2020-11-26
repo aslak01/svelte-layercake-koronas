@@ -9,7 +9,7 @@
 
 	import Select from 'svelte-select'
 	import { countries as items, regions } from './utils/searchcountries.js'
-	
+	import norskeRegioner from './data/countries/no_regions.json'
 	export let mainSelection;
 
 	let selectedValue = [];
@@ -30,12 +30,23 @@
 	let maximum
 	let pMmax
 	
-	$: maximum = $minidayStore.map(x => x.aMax)
-	$: pMmax = $minidayStore.map(x => x.pMmax)
+	$: maximum = Object.values($minidayStore).map(v => v.aMax)
+	$: pMmax = Object.values($minidayStore).map(v => v.pMmax)
+	
+	// $: console.log(maximum, pMmax)
+	
+	// $: maximum = $minidayStore[0] != undefined ? Object.values($minidayStore).forEach(v => v.aMax) : undefined
+	// $: pMmax = $minidayStore[0] != undefined ? Object.values($minidayStore).forEach(v => v.pMmax) : undefined
+	
 	
 	$: $minidaySettings.aMax = maximum[0] != undefined ? Math.max.apply(Math, maximum) : undefined
 	$: $minidaySettings.pMax = pMmax[0] != undefined ? Math.max.apply(Math, pMmax) : undefined
 	$: $minidaySettings.skala = skala
+	$: $minidaySettings.navnOversatt = true
+	
+	// $: Object.entries($minidayStore).forEach(([key, value]) => console.log(`${key}: ${value}`))
+	// $: console.log(Object.values($minidayStore).forEach(v => v.aMax))
+
 	
 	let defaults = [{label: "Norge", value: "nor"}, {label: "Storbritannia", value: "gbr"}, {label: "USA", value: "usa"}, {label: "Tyskland", value: "deu"}, {label: "Frankrike", value: "fra"}]
 	
@@ -45,6 +56,11 @@
 		selectedValue.push(...defaults)
 	})
 	
+	const oversettelse = function(region, sub) {
+		return sub ? norskeRegioner.subregions.filter(i => i.subregion === region) : norskeRegioner.regions.filter(i => i.region === region)
+	}
+	// console.log(oversettelse("South America", true))
+
 	
 	const uniqByProp_map = prop => arr =>
 	Array.from(
@@ -60,6 +76,17 @@
 	);
 	const uniqueById = uniqByProp_map("id");
 	
+	
+	const activeClFilter = function (region, sub) {
+		let result = regions.data.filter(obj => {
+			if (sub) {
+				return obj.subregion === region
+			}
+			return obj.region === region
+		})
+		// console.log(result === selectedValue)
+		return result === selectedValue
+	}	
 	
 	const selectRegion = function (region, sub) {
 		let result = regions.data.filter(obj => {
@@ -88,19 +115,25 @@
 				{/each}
 			</select>
 		</label>
+		<label>Oversatt navn: <input type="checkbox" bind:checked={$minidaySettings.navnOversatt}></label>
 		<div class="selectregions">
 			Velg en region:
 			{#each regions.meta.regions as region} 
-			<a on:click={() => selectRegion(region)}>{region}</a>
+			<a class:active={(activeClFilter(region, false))} on:click={() => selectRegion(region, false)}>
+				{oversettelse(region, false)[0].norsk}
+			</a>
 			{/each}
 			eller legg til/fjern land selv i boksen under grafene. <br>
 			{#if !subregions}
 			<a on:click={() => subregions = !subregions }>Vis subregioner</a>
 		{/if}
 		{#if subregions}
-		Velg en sub-region:
+		Velg en underregion:
 			{#each regions.meta.subregions as region} 
-				<a on:click={() => selectRegion(region, true)}>{region}</a>
+				<a class:active={(activeClFilter(region, true))} on:click={() => selectRegion(region, true)}>
+					{oversettelse(region, true)[0].norsk}
+					<!-- {region} -->
+				</a>
 			{/each}
 			<a on:click={() => subregions = !subregions }>X</a>
 		{/if}

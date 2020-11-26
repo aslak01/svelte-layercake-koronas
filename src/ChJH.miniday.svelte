@@ -5,9 +5,9 @@
 	import { LayerCake, ScaledSvg, uniques, Html } from 'layercake';
 	import { scaleBand } from 'd3-scale';
 	
+	import norsk from './data/countries/countries_no.json'
 	
 	import { computeMovingAverage, cutData, uniqueByKeepLast } from './utils/functions.js'
-
 	
 	import Line from './components/Line.svelte';
 	import Area from './components/Area.svelte';	
@@ -22,8 +22,8 @@
 	export let end = 1;
 	export let highlightColor;
 	export let index;
-	// console.log(index)
-		
+
+
 	let max
 	let shavedData
 	let currAvgIndex
@@ -36,12 +36,12 @@
 
 	const strokeWidth = 1
 	const stroke = highlightColor;
-		
 	
 	const insidens = function (avg, pop) {
 		return Number.parseFloat(((avg / pop)).toPrecision(3)*1000000).toFixed()
 	}
-	
+	const oversettelse = norsk.filter(i => i.alpha3 === country)
+	// console.log(country, " ", oversettelse[0] ? oversettelse[0].name : "ops")	
 	let population
 	$: population = cData.population
 	
@@ -68,28 +68,33 @@
 	let recentData
 	$: recentData = { id: country, aMax: max, pMmax }
 	
+	// $minidayStore[country] ? $minidayStore[country].pMmax = pMmax : console.log("laster insidens")
+
+	$: $minidayStore[country] = recentData
+	$: $minidaySettings.max = []
+	$: $minidaySettings.max.push(max)
+
+	// $: $minidayStore.filter((n) => n.id === country)[0].pMmax = pMmax
+	// $: entry[0] ? entry[0].pMmax = pMmax : console.log("ikke lasta")
 	
 	// $: console.log($minidayCopy)
 	
-	onMount( () => {
-		$minidayStore = [...$minidayStore, recentData]
-	})
+	// onMount( () => {
+	// 	$minidayStore = {...$minidayStore, [country]: recentData}
+	// })
 	onDestroy( () => {
 		console.log('Fjerna ', country)
-		$minidayStore = $minidayStore.filter((n) => {return n.id != country})
+		delete $minidayStore[country]
+		// $minidayStore = $minidayStore.filter((n) => {return n.id != country})
 	})
 	
 </script>
 
-	<article class="enhet">
-			<div class="text">
-				<h3 class="name">{cData.nativeName}</h3>
-				<!-- <span class="insidens">{currInsidens}</span> -->
-			</div>
-			<div class="chart">
-				<div class="chart-container">
-					{#if $minidaySettings.skala == 1}
-					<LayerCake
+<article class="enhet">
+	<div class="chart">
+		<div class="chart-container">
+			{#if $minidaySettings.skala == 1}
+				<LayerCake
 					percentRange={true}
 					x='date'
 					y='avg'
@@ -114,31 +119,31 @@
 					</Html>
 				</LayerCake>
 				{:else if $minidaySettings.skala == 2}
-				<LayerCake
-				percentRange={true}
-				x={xKey}
-				y={yKey}
-				data={shavedData}
-				yDomain={[0, $minidaySettings.aMax]}
-				xDomain={mvUniqueDates}
-				xScale={scaleBand()}
-			>
-				<ScaledSvg>
-					<Line
-						{stroke}
-						{strokeWidth}
-					/>
-					<Area 
-						fill={stroke}
-					/>
-				</ScaledSvg>
-				<Html>
-					<Label
-						labelValue={currAvg}
-					/>
-				</Html>
-			</LayerCake>
-			{:else}
+					<LayerCake
+						percentRange={true}
+						x={xKey}
+						y={yKey}
+						data={shavedData}
+						yDomain={[0, $minidaySettings.aMax]}
+						xDomain={mvUniqueDates}
+						xScale={scaleBand()}
+					>
+						<ScaledSvg>
+							<Line
+								{stroke}
+								{strokeWidth}
+							/>
+							<Area 
+								fill={stroke}
+							/>
+						</ScaledSvg>
+						<Html>
+							<Label
+								labelValue={currAvg}
+							/>
+						</Html>
+					</LayerCake>
+				{:else}
 				{#await updShv}...{:then updShv}
 					<LayerCake
 						percentRange={true}
@@ -166,11 +171,17 @@
 					</LayerCake>
 				{/await}
 			{/if}
-
-
-				</div>
-			</div>
-	</article>
+		</div>
+	</div>
+	<div class="text">
+		{#if $minidaySettings.navnOversatt}
+			<h3 class="name">{oversettelse[0].name}</h3>
+		{:else}
+			<h3 class="name">{cData.nativeName}</h3>
+		{/if}
+		<!-- <span class="insidens">{currInsidens}</span> -->
+	</div>
+</article>
 
 <style>
 	.enhet {
@@ -196,15 +207,18 @@
 	.text {
 		height: 30px;
 		position: relative;
+		width: 100%;
 	}
 	.name {
 		position: absolute;
-		top: 0;
+		top: 5px;
+		left: 5px;
 		display: block;
 		font-weight: normal;
-		font-size: clamp(.8rem, 1%, 1.2rem);
+		font-size: .8rem;
 		margin: 0;
-		margin-left: 5px;
+		/* margin-left: 5px; */
+
 		/* white-space: nowrap; */
 	}
 	.insidens {

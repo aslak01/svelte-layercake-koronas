@@ -7,17 +7,13 @@
 
 	const response3 = getData("https://api.apify.com/v2/key-value-stores/3qlmMu1XN2ZLoVIQt/records/LATEST?disableRedirect=true");
 	
-	
 	// todo:
 	// solid line at 0 in apple chart
 	// error handling apple chart
 	// organising minidays by insidens
-	// no zoom on iPhone in select form
 	// disable dropdown on countryadd
-	// add region group selection to minichart
 	// la bruker søke på et land som finnes i defaultsene uten at det kræsjer
 	// fikse bugg i at skala i minicharts ikke reflekterer endringer i range
-	
 	
 	import ChartsJHday from './ChJH.day.svelte';
 	import ChartsJHtot from './ChJH.tot.svelte';

@@ -4,7 +4,7 @@ import { uniqueByKeepLast } from './utils/functions.js'
 
 export const absoluteMax = writable([]);
 export const pMilMax = writable([]);
-export const minidayStore = writable([]);
+export const minidayStore = writable({});
 export const minidaySettings = writable({});
 export const minidayCopy = derived(
   minidayStore,

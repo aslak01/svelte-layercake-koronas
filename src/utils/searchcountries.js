@@ -56,7 +56,7 @@ const regionFiltered = regionObjs.filter((f) =>
 // separer lister med regioner og subregioner
 const regionVals = [...new Set(regionFiltered.map(item => item.region))]
 const subRegions = [...new Set(regionFiltered.map(item => item.subregion))]
-
+// console.log(subRegions)
 export const regions = {
   meta: {
     regions: regionVals,
