@@ -9,33 +9,42 @@
 	import SharedTooltip from './components/SharedTooltip.percent-range.svelte';
 	// import Labels from './components/Labels.svelte';
 
-	import raw from './data/convertcsv.json'		
-	const data = raw.map(({ FIELD1: År, ...rest }) => ({ År, ...rest }));
-	export let koronaVirus
+	import data from './data/convertcsv2.json'
+	// const data = raw.map(({ FIELD1: År, ...rest }) => ({ År, ...rest }));
+	// export let koronaVirus
 	
 	const xTickColor = "#fff";
 	const yTickColor = "#ccc";
 	
 	const restligeDiag = ["Syst. meningokokksykdom", "Aids", "Paratyfoidfeber", "Tyfoidfeber", "Syst. pneumokokksykdom", "Virale infeksjoner i sentralnervesystemet", "Syst. gr. B streptokokksykdom", "Syst. gr. A streptokokksykdom", "Prionsykdommer", "Alvorlige importsykdommer", "Alvorlige miljøsykdommer", "Mat- og vannbårne sykdommer", "Sykdommer forårsaket av visse resistente mikrober", "Sykdommer som forebygges gjennom Barnevaksinasjonsprogrammet", "Virushepatitter", "Zoonoser"]
 
-	const ignored = ["Seksuelt overførbare sykdommer", "År"]
+	const ignored = ["Koronavirus med utbruddspotensial", "Seksuelt overførbare sykdommer", "År"]
 	
-	var sumobjects = data.map(y => Object.keys(y).filter(k=>k!==ignored.some(p=>p===k)).reduce((x,z) => x + y[z], 0));
+	const restDiagSum = 0;
+	
+	let sumobjects = data.map(y => Object.keys(y).filter(k=>k!==ignored.some(p=>p===k)).reduce((x,z) => x + y[z], 0));
+	
+	let restSums = data.map(y => Object.entries(y).map(i => ignored.includes(i[0]) ? null : i[1] ).reduce((x,z) => x + z))
+		
+	
+	// let sumRest = data.map()
+	
 	
 	let summedData = []
+	
   sumobjects.forEach(function (value, index) {
 		if (data[index].År < 2020) {
 			summedData.push({
 				"År": data[index]["År"],
 				"Covid-19": 0,
-				"Restlige diagnoser": value,
+				"Restlige diagnoser": restSums[index],
 				"Seksuelt overførbare sykdommer": data[index]["Seksuelt overførbare sykdommer"]
 			})
 		} else if (data[index].År === 2020) {
 				summedData.push({
 					"År": data[index]["År"],
-					"Covid-19": koronaVirus,
-					"Restlige diagnoser": value,
+					"Covid-19": data[index]["Koronavirus med utbruddspotensial"],
+					"Restlige diagnoser": restSums[index],
 					"Seksuelt overførbare sykdommer": data[index]["Seksuelt overførbare sykdommer"]
 				})
 		}

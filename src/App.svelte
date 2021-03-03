@@ -5,7 +5,6 @@
 	import { getData } from './utils/fetch.js'
 	import { getData2 } from './utils/fetch1.js';
 
-	const response3 = getData("https://api.apify.com/v2/key-value-stores/3qlmMu1XN2ZLoVIQt/records/LATEST?disableRedirect=true");
 	
 	// todo:
 	// solid line at 0 in apple chart
@@ -16,7 +15,7 @@
 	// fikse bugg i at skala i minicharts ikke reflekterer endringer i range
 	
 	import ChartsJHday from './ChJH.day.svelte';
-	import ChartsJHtot from './ChJH.tot.svelte';
+	// import ChartsJHtot from './ChJH.tot.svelte';
 	import ChartsApple from './ChApple.svelte';
 	import ChartsFHI from './ChFHI.svelte';
 	
@@ -90,7 +89,7 @@
 	{/await}
 
 
-	{#await $response}
+	<!-- {#await $response}
 	<article class="text">
 		<h2>Totale diagnoser</h2>
 	</article>
@@ -99,7 +98,7 @@
 		</div>
 	{:then data}
 		<ChartsJHtot {data} {highlightColor} />
-	{/await} 
+	{/await} --> 
 
 
 	{#await $response2}
@@ -111,16 +110,13 @@
 	{/await}
 
 	{#if selectedValue.value === 'nor'}
-	{#await $response3}
 	<article class="text">
 		<h2>Sykdom rapportert til MSIS, 2016–2020</h2>
 	</article>
 		<div class="restricted">
 			<SpinLine size="60" color="#FF3E00" unit="px"></SpinLine>
 		</div>
-	{:then data3}
-		<ChartsFHI koronaVirus={data3.infected} />
-	{/await}
+		<ChartsFHI />
   {/if}
  
 	 <footer>
