@@ -56,10 +56,10 @@
     border-left: 1px dotted #666;
     pointer-events: none;
   }
-  .tooltip,
+  /* .tooltip,
   .line {
     transition: left 250ms ease-out, top 250ms ease-out;
-  }
+  } */
   .title {
     font-weight: bold;
   }
