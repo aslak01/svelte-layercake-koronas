@@ -110,12 +110,6 @@
 	{/await}
 
 	{#if selectedValue.value === 'nor'}
-	<article class="text">
-		<h2>Sykdom rapportert til MSIS, 2016–2020</h2>
-	</article>
-		<div class="restricted">
-			<SpinLine size="60" color="#FF3E00" unit="px"></SpinLine>
-		</div>
 		<ChartsFHI />
   {/if}
  
